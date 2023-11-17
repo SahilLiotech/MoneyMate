@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/home_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text=""
+            android:textSize="32sp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            app:fontFamily="serif"
+            android:textColor="@color/blackText"/>
+
+        <Button
+            android:id="@+id/open_account_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/openAccount"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_account_balance_black_24dp"
+            android:textSize="18sp"
+            android:padding="12sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/transfer_money_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/transferMoney"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_transfer_money"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"
+           />
+
+        <Button
+            android:id="@+id/check_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkBalance"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:textSize="18sp"
+            android:drawableTop="@drawable/ic_account_balance"
+            android:padding="12dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/check_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkTransactionDetail"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_transaction"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/request_debit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/requestDebit"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_debit"
+            android:textSize="18sp"
+            android:padding="12sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/request_cheque"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/requestCheque"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_cheque"
+            android:textSize="18sp"
+            android:padding="12sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/account_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accountInfo"
+            android:drawableTop="@drawable/ic_account_info"
+            android:padding="12dp"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:textSize="18sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/logout"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_logout"
+            android:textSize="18sp"
+            android:padding="12sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
+            android:id="@+id/debug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Debug" />
+    </LinearLayout>
+
+</ScrollView>

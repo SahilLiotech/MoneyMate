@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">MoneyMate</string>
+    <string name="Logo">MoneyMate</string>
+    <string name="LoginHeading">Login</string>
+    <string name="Uname">Username</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="CPassword">Confirm Password</string>
+    <string name="LoginBtn">Login</string>
+    <string name="SignupBtn">Signup</string>
+    <string name="signupText">Don\'t Have An Account?</string>
+    <string name="loginText">Already Have An Account?</string>
+    <string name="signupLink">SignUp</string>
+    <string name="loginLink">Login</string>
+    <string name="signupHeading">SIGN UP</string>
+    <string name="homeHeading">Welcome</string>
+    <string name="openAccount">Open An Account</string>
+    <string name="transferMoney">Transfer Money</string>
+    <string name="checkBalance">Check Balance</string>
+    <string name="checkTransactionDetail">Check Transcation Detail</string>
+    <string name="requestDebit">Request For Debit Card</string>
+    <string name="requestCheque">Request For Cheque Book</string>
+    <string name="accountInfo">Show Account Information</string>
+    <string name="logout">Logout</string>
+    <string name="accountOpenHeading">BANK ACCOUNT OPENING FORM</string>
+    <string name="name">Name</string>
+
+    <string name="account_type">Account Type</string>
+</resources>
