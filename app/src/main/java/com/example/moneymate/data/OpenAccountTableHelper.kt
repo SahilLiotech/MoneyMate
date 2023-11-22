@@ -11,6 +11,7 @@ private const val DB_NAME = "MoneyMate_Database"
 private const val TABLE_NAME = "accounts"
 
 private const val COLUMN_ID = "account_no"
+private const val COLUMN_UID = "uid"
 private const val COLUMN_NAME = "name"
 private const val COLUMN_GENDER = "gender"
 private const val COLUMN_MOBILE = "mobile"
@@ -34,6 +35,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
     private val CREATE_TABLE = """
     CREATE TABLE $TABLE_NAME (
         $COLUMN_ID INTEGER PRIMARY KEY,
+         $COLUMN_UID INTEGER REFERENCES ${RegistrationTableHelper.TABLE_NAME}(${RegistrationTableHelper.COLUMN_ID}),
         $COLUMN_NAME TEXT,
         $COLUMN_GENDER TEXT,
         $COLUMN_MOBILE TEXT,
@@ -67,25 +69,27 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
 
     fun openAccounnt(account:Account):Boolean{
         val db = writableDatabase
+        onCreate(db)
         val values = ContentValues().apply {
-            put(COLUMN_NAME,account.name)
-            put(COLUMN_ID,account.accountNumber)
-            put(COLUMN_GENDER,account.gender)
-            put(COLUMN_MOBILE,account.mobileNumber)
-            put(COLUMN_EMAIL,account.email)
-            put(COLUMN_DOB,account.dob)
-            put(COLUMN_PAN,account.pan)
-            put(COLUMN_ADDRESS,account.address)
-            put(COLUMN_STATE,account.state)
-            put(COLUMN_CITY,account.city)
-            put(COLUMN_PIN,account.pincode)
-            put(COLUMN_IFSC,account.ifsc)
-            put(COLUMN_BRANCH,account.branch)
-            put(COLUMN_NOMINEE,account.nomineeName)
-            put(COLUMN_NOMINEE_ACCOUNT_NO,account.nomineeAccount)
-            put(COLUMN_NOMINEE_ACCOUNT_TYPE,account.nomineeAccountType)
-            put(COLUMN_ACCOUNT_OPEN,account.accountOpenDate)
-            put(COLUMN_ACCOUNT_STATUS,account.accountStatus)
+            put(COLUMN_NAME, account.name)
+            put(COLUMN_UID, account.registrationId)
+            put(COLUMN_ID, account.accountNumber)
+            put(COLUMN_GENDER, account.gender)
+            put(COLUMN_MOBILE, account.mobileNumber)
+            put(COLUMN_EMAIL, account.email)
+            put(COLUMN_DOB, account.dob)
+            put(COLUMN_PAN, account.pan)
+            put(COLUMN_ADDRESS, account.address)
+            put(COLUMN_STATE, account.state)
+            put(COLUMN_CITY, account.city)
+            put(COLUMN_PIN, account.pincode)
+            put(COLUMN_IFSC, account.ifsc)
+            put(COLUMN_BRANCH, account.branch)
+            put(COLUMN_NOMINEE, account.nomineeName)
+            put(COLUMN_NOMINEE_ACCOUNT_NO, account.nomineeAccount)
+            put(COLUMN_NOMINEE_ACCOUNT_TYPE, account.nomineeAccountType)
+            put(COLUMN_ACCOUNT_OPEN, account.accountOpenDate)
+            put(COLUMN_ACCOUNT_STATUS, account.accountStatus)
         }
         val result = db.insert(TABLE_NAME, null, values)
         db.close()
@@ -102,31 +106,30 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
             do {
                 val account = Account(
                     accountNumber = cursor.getLong(0),
-                    name = cursor.getString(1),
-                    gender = cursor.getString(2),
-                    mobileNumber = cursor.getString(3),
-                    email = cursor.getString(4),
-                    dob = cursor.getString(5),
-                    pan = cursor.getString(6),
-                    address = cursor.getString(7),
-                    state = cursor.getString(8),
-                    city = cursor.getString(9),
-                    pincode = cursor.getString(10),
-                    ifsc = cursor.getString(11),
-                    branch = cursor.getString(12),
-                    nomineeName = cursor.getString(13),
-                    nomineeAccount = cursor.getString(14),
-                    nomineeAccountType = cursor.getString(15),
-                    accountOpenDate = cursor.getString(16),
-                    accountStatus = cursor.getString(17)
+                    registrationId = cursor.getInt(1),
+                    name = cursor.getString(2),
+                    gender = cursor.getString(3),
+                    mobileNumber = cursor.getString(4),
+                    email = cursor.getString(5),
+                    dob = cursor.getString(6),
+                    pan = cursor.getString(7),
+                    address = cursor.getString(8),
+                    state = cursor.getString(9),
+                    city = cursor.getString(10),
+                    pincode = cursor.getString(11),
+                    ifsc = cursor.getString(12),
+                    branch = cursor.getString(13),
+                    nomineeName = cursor.getString(14),
+                    nomineeAccount = cursor.getString(15),
+                    nomineeAccountType = cursor.getString(16),
+                    accountOpenDate = cursor.getString(17),
+                    accountStatus = cursor.getString(18)
                 )
                 accountList.add(account)
             } while (cursor.moveToNext())
         }
-
         cursor.close()
         db.close()
-
         return accountList
     }
 

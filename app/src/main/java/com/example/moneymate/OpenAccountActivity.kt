@@ -98,6 +98,7 @@ class OpenAccountActivity : AppCompatActivity() {
 
         val account = Account(
             randomAccountNumber,
+            -1,
             enteredName,
             selectedGender,
             enteredMobileNumber,

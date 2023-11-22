@@ -8,15 +8,18 @@ import com.example.moneymate.model.User
 
 private const val DB_VERSION = 1
 private const val DB_NAME = "MoneyMate_Database"
-private const val TABLE_NAME = "User"
 
-private const val COLUMN_ID = "id"
 private const val COLUMN_UNAME = "uname"
 private const val COLUMN_EMAIL = "email"
 private const val COLUMN_PASSWORD = "password"
 private const val COLUMN_REG_DATE = "registration_date"
 
 class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,DB_VERSION) {
+
+    companion object {
+        const val TABLE_NAME = "User"
+        const val COLUMN_ID = "id"
+    }
 
     private val CREATE_TABLE = """
     CREATE TABLE $TABLE_NAME (

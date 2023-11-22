@@ -2,6 +2,7 @@ package com.example.moneymate.model
 
 data class Account(
     var accountNumber: Long,
+    var registrationId: Int = -1,
     var name: String,
     var gender: String,
     var mobileNumber: String,
