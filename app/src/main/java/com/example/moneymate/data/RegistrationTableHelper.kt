@@ -8,7 +8,9 @@ import com.example.moneymate.model.User
 
 private const val DB_VERSION = 1
 private const val DB_NAME = "MoneyMate_Database"
+private const val TABLE_NAME = "User"
 
+private const val COLUMN_ID = "id"
 private const val COLUMN_UNAME = "uname"
 private const val COLUMN_EMAIL = "email"
 private const val COLUMN_PASSWORD = "password"
@@ -16,19 +18,15 @@ private const val COLUMN_REG_DATE = "registration_date"
 
 class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,DB_VERSION) {
 
-    companion object {
-        const val TABLE_NAME = "User"
-        const val COLUMN_ID = "id"
-    }
 
     private val CREATE_TABLE = """
-    CREATE TABLE $TABLE_NAME (
+    CREATE TABLE IF NOT EXISTS $TABLE_NAME (
         $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         $COLUMN_UNAME TEXT,
         $COLUMN_EMAIL TEXT,
         $COLUMN_PASSWORD TEXT,
         $COLUMN_REG_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+    )
 """
     private val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
 
@@ -94,6 +92,5 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
 
         return isValid
     }
-
 
 }

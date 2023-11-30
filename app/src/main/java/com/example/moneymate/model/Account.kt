@@ -2,7 +2,7 @@ package com.example.moneymate.model
 
 data class Account(
     var accountNumber: Long,
-    var registrationId: Int = -1,
+    var userid: Int = -1,
     var name: String,
     var gender: String,
     var mobileNumber: String,
@@ -20,4 +20,30 @@ data class Account(
     var nomineeAccountType: String,
     var accountOpenDate: String,
     var accountStatus:String
-)
+){
+    override fun toString(): String {
+        return """
+           Account:{
+                accountNumber:$accountNumber
+                userid:$userid
+                name:$name
+                gender:$gender
+                mobile:$mobileNumber
+                email:$email
+                dob:$dob
+                pan:$pan
+                address:$address
+                state:$state
+                city:$city
+                pincode:$pincode
+                ifsc:$ifsc
+                branch:$branch
+                nomineeName:$nomineeName
+                nomineeAccount:$nomineeAccount
+                nomineeAccountType:$nomineeAccountType
+                accountOpenDate:$accountOpenDate
+                accountStatus:$accountStatus
+           }
+           """
+    }
+}

@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import com.example.moneymate.data.RequestTableHelper
+import com.example.moneymate.model.Request
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var openAccountButton: Button
@@ -27,6 +29,9 @@ class HomeActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("MoneyMate.Login", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
+
+        val sharedPreferencesData = getSharedPreferences("MoneyMate.Account", Context.MODE_PRIVATE)
+        val accountNumber = sharedPreferencesData.getLong("accountNo",0L)
 
         heading = findViewById(R.id.home_heading)
         heading.text = "Welcome $uname"
@@ -61,18 +66,13 @@ class HomeActivity : AppCompatActivity() {
 
             AlertDialog.Builder(this@HomeActivity).apply {
                 setTitle("Request For Debit Card")
-                setMessage("Are you sure you want to make a request for debit card with account number: 34066765643 ?")
+                setMessage("Are you sure you want to make a request for debit card with account number: $accountNumber ?")
                 setIcon(R.drawable.ic_info_black_24dp)
 
                     setPositiveButton("Yes"){
-                        dialog, which ->
-                            AlertDialog.Builder(this@HomeActivity) .create().apply {
-                            setMessage("You request for Debit Card has been successfully sent. You'll receive it soon.")
-                            setButton(DialogInterface.BUTTON_POSITIVE,"OK"){
-                                    msgDialog, which ->  msgDialog.dismiss()
-                            }
-                            show()
-                        }
+                        dialog, which->
+                            insertDebitRequest(accountNumber)
+                            dialog.dismiss()
                     }
 
                     setNegativeButton("No"){
@@ -88,7 +88,7 @@ class HomeActivity : AppCompatActivity() {
 
                  AlertDialog.Builder(this@HomeActivity).apply {
                  setTitle("Request For Cheque Book")
-                 setMessage("Are you sure you want to make a request for cheque book with account number: 34066765643 ?")
+                 setMessage("Are you sure you want to make a request for cheque book with account number: $accountNumber ?")
                  setIcon(R.drawable.ic_info_black_24dp)
 
                  setPositiveButton("Yes"){
@@ -145,6 +145,36 @@ class HomeActivity : AppCompatActivity() {
         debug.setOnClickListener {
             val intent = Intent(this@HomeActivity,DebugActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun insertDebitRequest(accountNumber:Long){
+        val dbHelper = RequestTableHelper(this@HomeActivity)
+        val request = Request(
+            0,
+             accountNumber,
+            "Debit Card",
+            "",
+            "Pending"
+        )
+        val success = dbHelper.insertRequest(request)
+
+        if (success) {
+            AlertDialog.Builder(this@HomeActivity).create().apply {
+                setMessage("Your request for a Debit Card has been successfully sent. You'll receive it soon.")
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { msgDialog, _ ->
+                    msgDialog.dismiss()
+                }
+                show()
+            }
+        } else {
+            AlertDialog.Builder(this@HomeActivity).create().apply {
+                setMessage("Error occurred while processing your request. Please try again.")
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { msgDialog, _ ->
+                    msgDialog.dismiss()
+                }
+                show()
+            }
         }
     }
 

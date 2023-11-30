@@ -46,7 +46,9 @@ class LoginActivity : AppCompatActivity() {
 
         val dbHelper = RegistrationTableHelper(this)
 
-        if (dbHelper.isValidUser(enteredUname, enteredPassword)) {
+        val user = dbHelper.isValidUser(enteredUname, enteredPassword)
+
+        if (user) {
             AlertDialog.Builder(this).create().apply {
                 setTitle("Successful Login")
                 setIcon(R.drawable.sucess)

@@ -1,13 +1,16 @@
 package com.example.moneymate
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.model.Account
+import kotlinx.android.synthetic.main.activity_account_info.*
 import java.security.SecureRandom
 
 
@@ -30,6 +33,7 @@ class OpenAccountActivity : AppCompatActivity() {
     private lateinit var accountType: Spinner
     private lateinit var submitButton: Button
     private lateinit var accountTypeList: ArrayList<String>
+    private val Key = "MoneyMate.Account"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +135,28 @@ class OpenAccountActivity : AppCompatActivity() {
                 }
                 show()
             }
+            val sharedpreference = getSharedPreferences(Key, Context.MODE_PRIVATE)
+            val editor = sharedpreference.edit()
+            editor.putLong("accountNo",randomAccountNumber)
+            editor.putString("name",enteredName)
+            editor.putString("gender",selectedGender)
+            editor.putString("mobile",enteredMobileNumber)
+            editor.putString("email",enteredEmail)
+            editor.putString("dob",enteredDOB)
+            editor.putString("pan",enteredPan)
+            editor.putString("address",enteredAddress)
+            editor.putString("state",enteredState)
+            editor.putString("city",enteredCity)
+            editor.putString("pin",enteredPin)
+            editor.putString("ifsc",ifsc)
+            editor.putString("branch",branch)
+            editor.putString("nomineename",enteredNomineeName)
+            editor.putString("nomineeaccount",enteredNomineeAccountNo)
+            editor.putString("nomineetype",enteredNomineeAccountType)
+            editor.putString("accountopen",account.accountOpenDate)
+            editor.putString("accountstatus",account.accountStatus)
+            editor.commit()
+
         }
 
         else{
@@ -151,6 +177,6 @@ class OpenAccountActivity : AppCompatActivity() {
         val secureRandom = SecureRandom()
         val lowerBound = 100_000_000_000L
         val upperBound = 999_999_999_999L
-        return lowerBound + secureRandom.nextLong() % (upperBound - lowerBound + 1)
+        return Math.abs(lowerBound + secureRandom.nextLong() % (upperBound - lowerBound + 1))
     }
 }

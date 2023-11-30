@@ -2,16 +2,23 @@ package com.example.moneymate
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import com.example.moneymate.data.OpenAccountTableHelper
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+//        val helper = OpenAccountTableHelper(this)
+//
+//        for (account in helper.getAllAccounts()){
+//            Log.d("db-helper",account.toString())
+//        }
 
         val handler = Handler()
         handler.postDelayed({
