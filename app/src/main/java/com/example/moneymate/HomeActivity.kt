@@ -129,7 +129,12 @@ class HomeActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("MoneyMate.Login", Context.MODE_PRIVATE)
                     val editor:SharedPreferences.Editor = sharedPreferences.edit()
                     editor.clear()
-                    editor.commit()
+                    editor.apply()
+
+                    val accountSharedPreferences = getSharedPreferences("MoneyMate.Account", Context.MODE_PRIVATE)
+                    val accountEditor:SharedPreferences.Editor = accountSharedPreferences.edit()
+                    accountEditor.clear()
+                    accountEditor.apply()
 
                     val intent = Intent(this@HomeActivity,LoginActivity::class.java)
                     startActivity(intent)
@@ -139,12 +144,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 show()
             }
-        }
 
-        val debug = findViewById<Button>(R.id.debug)
-        debug.setOnClickListener {
-            val intent = Intent(this@HomeActivity,DebugActivity::class.java)
-            startActivity(intent)
         }
     }
 

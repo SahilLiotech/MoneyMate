@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import com.example.moneymate.data.OpenAccountTableHelper
+import com.example.moneymate.data.RegistrationTableHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,11 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val helper = OpenAccountTableHelper(this)
-//
-//        for (account in helper.getAllAccounts()){
-//            Log.d("db-helper",account.toString())
-//        }
+        displayAllUsers()
 
         val handler = Handler()
         handler.postDelayed({
@@ -32,6 +28,15 @@ class MainActivity : AppCompatActivity() {
             finish()
         }, 3000)
 
+    }
+
+    private fun displayAllUsers() {
+        val dbHelper = RegistrationTableHelper(this)
+        val userList = dbHelper.viewData()
+
+        for (user in userList) {
+            Log.d("UserRecord", user.toString())
+        }
     }
 
     fun isUserLoggedIn():Boolean{

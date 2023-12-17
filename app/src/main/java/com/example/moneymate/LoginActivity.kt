@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.RegistrationTableHelper
+import com.example.moneymate.model.User
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -36,8 +37,6 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             loginUser()
         }
-
-
     }
 
     private fun loginUser() {
@@ -46,9 +45,13 @@ class LoginActivity : AppCompatActivity() {
 
         val dbHelper = RegistrationTableHelper(this)
 
-        val user = dbHelper.isValidUser(enteredUname, enteredPassword)
+        val userData = dbHelper.isValidUser(enteredUname, enteredPassword)
 
-        if (user) {
+        if (userData != null) {
+
+            // User is valid, save user data in SharedPreferences
+           saveUserInfo(userData)
+
             AlertDialog.Builder(this).create().apply {
                 setTitle("Successful Login")
                 setIcon(R.drawable.sucess)
@@ -57,15 +60,22 @@ class LoginActivity : AppCompatActivity() {
                     val intent = Intent(this@LoginActivity,HomeActivity::class.java)
                     startActivity(intent)
 
-                    val sharedPreference = getSharedPreferences(Key, Context.MODE_PRIVATE)
-                    val editor: SharedPreferences.Editor = sharedPreference.edit()
-                    editor.putString("uname",enteredUname)
-                    editor.commit()
                 }
                 show()
             }
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun saveUserInfo(userData: User) {
+        val sharedPreference = getSharedPreferences(Key, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreference.edit()
+
+        editor.putInt("userId", userData.id)
+        editor.putString("uname", userData.uname)
+        editor.putString("email", userData.email)
+
+        editor.commit()
     }
 }

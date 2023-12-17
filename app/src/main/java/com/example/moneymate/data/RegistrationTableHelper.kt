@@ -54,6 +54,31 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
         return result != -1L
     }
 
+//    //this function fetch the data based on the uname which is entered at the login time
+//    fun getUserData(uname: String): User? {
+//        val db = readableDatabase
+//
+//        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UNAME = ?"
+//        val cursor = db.rawQuery(query, arrayOf(uname))
+//
+//        var user: User? = null
+//
+//        if (cursor.moveToFirst()) {
+//            val id = cursor.getInt(0)
+//            val username = cursor.getString(1)
+//            val email = cursor.getString(2)
+//            val password = cursor.getString(3)
+//            val regDate = cursor.getString(4)
+//
+//            user = User(id, username, email, password, regDate)
+//        }
+//
+//        cursor.close()
+//        db.close()
+//
+//        return user
+//    }
+
     //this function is use to fetch all the records from the database
     fun viewData(): List<User> {
         val userList = mutableListOf<User>()
@@ -80,17 +105,27 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
     }
 
     //this function check that entered uname and password in login activity is exist in the database or not
-    fun isValidUser(uname: String, password: String): Boolean {
+    fun isValidUser(uname: String, password: String): User? {
         val db = readableDatabase
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UNAME = ? AND $COLUMN_PASSWORD = ?"
         val cursor = db.rawQuery(query, arrayOf(uname, password))
 
-        val isValid = cursor.count > 0
+        var user: User? = null
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getInt(0)
+            val username = cursor.getString(1)
+            val email = cursor.getString(2)
+            val userPassword = cursor.getString(3)
+            val regDate = cursor.getString(4)
+
+            user = User(id, username, email, userPassword, regDate)
+        }
 
         cursor.close()
         db.close()
 
-        return isValid
+        return user
     }
 
 }
