@@ -3,6 +3,7 @@ package com.example.moneymate
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,14 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.model.Account
 import java.security.SecureRandom
+import kotlin.math.abs
 
 
 class OpenAccountActivity : AppCompatActivity() {
-
-    val prefs = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
-    val uid = prefs.getInt("userId",-1)
-
-
     private lateinit var name: EditText
     private lateinit var radioGender: RadioGroup
     private lateinit var radioMale: RadioButton
@@ -36,10 +33,14 @@ class OpenAccountActivity : AppCompatActivity() {
     private lateinit var accountType: Spinner
     private lateinit var submitButton: Button
     private lateinit var accountTypeList: ArrayList<String>
+    private lateinit var prefs: SharedPreferences
+    private var userId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_account)
+        prefs = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        userId = prefs.getInt("userId", -1)
         accountTypeList = ArrayList()
         populateAccountTypeList()
 
@@ -104,7 +105,7 @@ class OpenAccountActivity : AppCompatActivity() {
 
         val account = Account(
             randomAccountNumber,
-            uid,
+            userId,
             enteredName,
             selectedGender,
             enteredMobileNumber,
@@ -159,6 +160,6 @@ class OpenAccountActivity : AppCompatActivity() {
         val secureRandom = SecureRandom()
         val lowerBound = 100_000_000_000L
         val upperBound = 999_999_999_999L
-        return Math.abs(lowerBound + secureRandom.nextLong() % (upperBound - lowerBound + 1))
+        return abs(lowerBound + secureRandom.nextLong() % (upperBound - lowerBound + 1))
     }
 }
