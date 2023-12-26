@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val sharedPreferences = getSharedPreferences("MoneyMate.Login", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
 
         val sharedPreferencesData = getSharedPreferences("MoneyMate.Account", Context.MODE_PRIVATE)
@@ -126,7 +126,7 @@ class HomeActivity : AppCompatActivity() {
                 setIcon(R.drawable.ic_info_black_24dp)
                 setPositiveButton("Yes"){
                    dialog, which ->
-                    val sharedPreferences = getSharedPreferences("MoneyMate.Login", Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences("auth_pref", Context.MODE_PRIVATE)
                     val editor:SharedPreferences.Editor = sharedPreferences.edit()
                     editor.clear()
                     editor.apply()

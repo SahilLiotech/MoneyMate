@@ -1,9 +1,11 @@
 package com.example.moneymate
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.OpenAccountTableHelper
@@ -12,6 +14,10 @@ import java.security.SecureRandom
 
 
 class OpenAccountActivity : AppCompatActivity() {
+
+    val prefs = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+    val uid = prefs.getInt("userId",-1)
+
 
     private lateinit var name: EditText
     private lateinit var radioGender: RadioGroup
@@ -94,11 +100,11 @@ class OpenAccountActivity : AppCompatActivity() {
         val enteredNomineeAccountNo = nomineeAccountNo.text.toString()
         val enteredNomineeAccountType = accountType.selectedItem.toString()
 
-        val dbHelper = OpenAccountTableHelper(this)
+        // val dbHelper = OpenAccountTableHelper(this)
 
         val account = Account(
             randomAccountNumber,
-            0,
+            uid,
             enteredName,
             selectedGender,
             enteredMobileNumber,
@@ -118,9 +124,11 @@ class OpenAccountActivity : AppCompatActivity() {
             "Pending"
         )
 
-        val success = dbHelper.openAccounnt(account)
+        Log.d("db-debug", account.toString())
 
-        if(success){
+        /*val success = dbHelper.openAccounnt(account)
+
+        if(success != -1L){
             AlertDialog.Builder(this).create().apply {
                 setTitle("Account Open Sucessfully")
                 setMessage("Your Account is opened sucessfully wait for confirmation of active status")
@@ -143,7 +151,7 @@ class OpenAccountActivity : AppCompatActivity() {
                 }
                 show()
             }
-        }
+        }*/
 
     }
 

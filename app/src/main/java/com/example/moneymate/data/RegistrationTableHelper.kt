@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.moneymate.model.User
 
 private const val DB_VERSION = 1
@@ -40,7 +41,7 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
     }
 
     //this function is used to add the data into the database
-    fun addUser(uname: String, email: String, password: String):Boolean {
+    fun addUser(uname: String, email: String, password: String): Long {
         val db = writableDatabase
 
         val values = ContentValues().apply {
@@ -51,7 +52,7 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
 
         val result = db.insert(TABLE_NAME, null, values)
         db.close()
-        return result != -1L
+        return result
     }
 
 //    //this function fetch the data based on the uname which is entered at the login time
@@ -124,6 +125,7 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
 
         cursor.close()
         db.close()
+        Log.d("db-debug", user.toString())
 
         return user
     }

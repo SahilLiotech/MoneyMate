@@ -69,7 +69,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         onCreate(db)
     }
 
-    fun openAccounnt(account:Account):Boolean{
+    fun openAccounnt(account:Account):Long {
         val db = writableDatabase
         onCreate(db)
         val values = ContentValues().apply {
@@ -95,7 +95,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         Log.d("db-debug",values.toString())
         val result = db.insert(TABLE_NAME, null, values)
         db.close()
-        return result != -1L
+        return result
     }
 
     fun getAllAccounts(): List<Account> {

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -19,7 +20,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var uname: EditText
     private lateinit var password: EditText
     private lateinit var loginBtn: Button
-    private val Key = "MoneyMate.Login"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +28,10 @@ class LoginActivity : AppCompatActivity() {
         uname = findViewById(R.id.unametxt)
         password = findViewById(R.id.passwordtxt)
         loginBtn = findViewById(R.id.loginbtn)
+
+        val prefs = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val content = prefs.all
+        Log.d("content",content.toString())
 
         signupLink.setOnClickListener {
             val intent = Intent(this@LoginActivity,SignupActivity::class.java)
@@ -50,13 +54,14 @@ class LoginActivity : AppCompatActivity() {
         if (userData != null) {
 
             // User is valid, save user data in SharedPreferences
-           saveUserInfo(userData)
+            saveUserInfo(userData)
+            // Log.d("db-debug", "user id: ${userData.id}")
 
             AlertDialog.Builder(this).create().apply {
                 setTitle("Successful Login")
                 setIcon(R.drawable.sucess)
                 setMessage("You Logged in Successfully")
-                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
                     val intent = Intent(this@LoginActivity,HomeActivity::class.java)
                     startActivity(intent)
 
@@ -69,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun saveUserInfo(userData: User) {
-        val sharedPreference = getSharedPreferences(Key, Context.MODE_PRIVATE)
+        val sharedPreference = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreference.edit()
 
         editor.putInt("userId", userData.id)

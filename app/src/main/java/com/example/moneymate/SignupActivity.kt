@@ -41,14 +41,14 @@ class SignupActivity : AppCompatActivity() {
         val userPassword = password.text.toString()
 
         val dbHelper = RegistrationTableHelper(this)
-        val isRegistered = dbHelper.addUser(username, userEmail, userPassword)
+        val userId = dbHelper.addUser(username, userEmail, userPassword)
 
-        if (isRegistered) {
+        if (userId != -1L) {
             AlertDialog.Builder(this).create().apply {
                 setTitle("Successful Registration")
                 setIcon(R.drawable.sucess)
                 setMessage("Your Registration Is Completed")
-                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
                     val intent = Intent(this@SignupActivity,LoginActivity::class.java)
                     startActivity(intent)
                 }
