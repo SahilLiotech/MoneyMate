@@ -43,6 +43,7 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
     //this function is used to add the data into the database
     fun addUser(uname: String, email: String, password: String): Long {
         val db = writableDatabase
+        onCreate(db)
 
         val values = ContentValues().apply {
             put(COLUMN_UNAME, uname)
@@ -84,6 +85,7 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
     fun viewData(): List<User> {
         val userList = mutableListOf<User>()
         val db = readableDatabase
+        onCreate(db)
         val query = "SELECT * FROM $TABLE_NAME"
         val cursor = db.rawQuery(query, null)
 
@@ -108,6 +110,7 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
     //this function check that entered uname and password in login activity is exist in the database or not
     fun isValidUser(uname: String, password: String): User? {
         val db = readableDatabase
+        onCreate(db)
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UNAME = ? AND $COLUMN_PASSWORD = ?"
         val cursor = db.rawQuery(query, arrayOf(uname, password))
 
