@@ -101,7 +101,7 @@ class OpenAccountActivity : AppCompatActivity() {
         val enteredNomineeAccountNo = nomineeAccountNo.text.toString()
         val enteredNomineeAccountType = accountType.selectedItem.toString()
 
-        // val dbHelper = OpenAccountTableHelper(this)
+        val dbHelper = OpenAccountTableHelper(this)
 
         val account = Account(
             randomAccountNumber,
@@ -121,13 +121,13 @@ class OpenAccountActivity : AppCompatActivity() {
             enteredNomineeName,
             enteredNomineeAccountNo,
             enteredNomineeAccountType,
-            System.currentTimeMillis().toString(),
-            "Pending"
+            "",
+            "pending"
         )
 
-        Log.d("db-debug", account.toString())
+        Log.d("db-open", account.toString())
 
-        /*val success = dbHelper.openAccounnt(account)
+        val success = dbHelper.openAccounnt(account)
 
         if(success != -1L){
             AlertDialog.Builder(this).create().apply {
@@ -152,7 +152,7 @@ class OpenAccountActivity : AppCompatActivity() {
                 }
                 show()
             }
-        }*/
+        }
 
     }
 

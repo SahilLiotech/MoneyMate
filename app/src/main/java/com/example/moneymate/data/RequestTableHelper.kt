@@ -47,16 +47,15 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         val values = ContentValues().apply {
             put(COLUMN_ACCOUNT_NO,request.accountNo)
             put(COLUMN_REQUEST_TYPE,request.requestType)
-            put(COLUMN_REQUEST_DATE,request.requestDate)
             put(COLUMN_REQUEST_STATUS,request.requestStatus)
         }
-        Log.d("request-debug",values.toString())
+        Log.d("request-debug",request.toString())
         val result = db.insert(REQUEST_TABLE_NAME, null, values)
         db.close()
         return result != -1L
     }
 
-    fun getRequest():List<Request>{
+   /* fun getRequest():List<Request>{
 
         val requestList = mutableListOf<Request>()
         val query = "SELECT * FROM $REQUEST_TABLE_NAME"
@@ -78,5 +77,5 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         cursor.close()
         db.close()
         return requestList
-    }
+    }*/
 }

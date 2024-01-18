@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun isUserLoggedIn():Boolean{
-        val sharedPreferences = getSharedPreferences("MoneyMate.Login", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
 
         return uname != "user"

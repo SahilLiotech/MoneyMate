@@ -41,7 +41,7 @@ data class Account(
                 nomineeName:$nomineeName
                 nomineeAccount:$nomineeAccount
                 nomineeAccountType:$nomineeAccountType
-                accountOpenDate:$accountOpenDate
+                accountOpendate:$accountOpenDate
                 accountStatus:$accountStatus
            }
            """

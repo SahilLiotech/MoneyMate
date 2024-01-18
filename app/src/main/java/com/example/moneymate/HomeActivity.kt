@@ -7,8 +7,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.RequestTableHelper
 import com.example.moneymate.model.Request
 
@@ -22,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var accountInfo:Button
     private lateinit var logout:Button
     private lateinit var heading:TextView
+    private lateinit var accountNumber:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +33,21 @@ class HomeActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
 
-        val sharedPreferencesData = getSharedPreferences("MoneyMate.Account", Context.MODE_PRIVATE)
-        val accountNumber = sharedPreferencesData.getLong("accountNo",0L)
+        val prefs: SharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val userId = prefs.getInt("userId", -1)
+
+        val dbHelper = OpenAccountTableHelper(this)
+        val account = dbHelper.getAccountByUserId(userId)
+
+
+        if (account != null) {
+            accountNumber = account.accountNumber.toString()
+        }
+
+
+        val data= sharedPreferences.all
+        Log.d("pref-data",data.toString())
+
 
         heading = findViewById(R.id.home_heading)
         heading.text = "Welcome $uname"
@@ -39,7 +55,6 @@ class HomeActivity : AppCompatActivity() {
         openAccountButton = findViewById(R.id.open_account_btn)
         openAccountButton.setOnClickListener {
             val intent = Intent(this, OpenAccountActivity::class.java)
-
             startActivity(intent)
         }
 
@@ -71,13 +86,13 @@ class HomeActivity : AppCompatActivity() {
 
                     setPositiveButton("Yes"){
                         dialog, which->
-                            insertDebitRequest(accountNumber)
+                            insertDebitRequest(accountNumber.toLong())
                             dialog.dismiss()
                     }
 
                     setNegativeButton("No"){
                         dialog, which ->
-                        dialog.dismiss()
+                            dialog.dismiss()
                     }
                  show()
              }
@@ -93,18 +108,14 @@ class HomeActivity : AppCompatActivity() {
 
                  setPositiveButton("Yes"){
                         dialog, which ->
-                                AlertDialog.Builder(this@HomeActivity) .create().apply {
-                                setMessage("You request for cheque book has been successfully sent. You'll receive it soon.")
-                                setButton(DialogInterface.BUTTON_POSITIVE,"OK"){
-                                    dialog, which ->  dialog.dismiss()
-                        }
-                        show()
-                     }
+                            insertChequeBookRequest(accountNumber.toLong())
+                            dialog.dismiss()
+
                  }
 
                  setNegativeButton("No"){
                         dialog, which ->
-                    dialog.dismiss()
+                        dialog.dismiss()
                 }
 
                 show()
@@ -131,11 +142,6 @@ class HomeActivity : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
 
-                    val accountSharedPreferences = getSharedPreferences("MoneyMate.Account", Context.MODE_PRIVATE)
-                    val accountEditor:SharedPreferences.Editor = accountSharedPreferences.edit()
-                    accountEditor.clear()
-                    accountEditor.apply()
-
                     val intent = Intent(this@HomeActivity,LoginActivity::class.java)
                     startActivity(intent)
                 }
@@ -151,17 +157,49 @@ class HomeActivity : AppCompatActivity() {
     private fun insertDebitRequest(accountNumber:Long){
         val dbHelper = RequestTableHelper(this@HomeActivity)
         val request = Request(
-            0,
-             accountNumber,
+            accountNumber,
             "Debit Card",
-            "",
-            "Pending"
+            "Pending",
+            ""
         )
+
+       // Log.d("debug-insert",request.toString())
         val success = dbHelper.insertRequest(request)
 
         if (success) {
             AlertDialog.Builder(this@HomeActivity).create().apply {
                 setMessage("Your request for a Debit Card has been successfully sent. You'll receive it soon.")
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { msgDialog, _ ->
+                    msgDialog.dismiss()
+                }
+                show()
+            }
+        } else {
+            AlertDialog.Builder(this@HomeActivity).create().apply {
+                setMessage("Error occurred while processing your request. Please try again.")
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { msgDialog, _ ->
+                    msgDialog.dismiss()
+                }
+                show()
+            }
+        }
+    }
+
+    private fun insertChequeBookRequest(accountNumber:Long){
+        val dbHelper = RequestTableHelper(this@HomeActivity)
+        val request = Request(
+            accountNumber,
+            "Credit Card",
+            "Pending",
+            ""
+        )
+
+        Log.d("debug-insert",request.toString())
+        val success = dbHelper.insertRequest(request)
+
+        if (success) {
+            AlertDialog.Builder(this@HomeActivity).create().apply {
+                setMessage("Your request for a cheque book has been successfully sent. You'll receive it soon.")
                 setButton(DialogInterface.BUTTON_POSITIVE, "OK") { msgDialog, _ ->
                     msgDialog.dismiss()
                 }

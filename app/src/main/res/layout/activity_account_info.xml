@@ -276,6 +276,5 @@
             app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/account_open" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

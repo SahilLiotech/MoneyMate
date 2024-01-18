@@ -28,67 +28,45 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/payer_account_no"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Payers's Account Number"
-            android:layout_marginHorizontal="16dp"
-            android:background="@drawable/input_box"
-            android:textColorHint="@color/whiteText"
-            android:textColor='@color/whiteText'
-            android:textSize="20sp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal='20sp'
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/transfermoneyheading"
-            android:importantForAutofill="no" />
-
-        <EditText
             android:id="@+id/recipient_account_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Recipient's Account Number"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/input_box"
-            android:textColorHint="@color/whiteText"
-            android:textColor='@color/whiteText'
-            android:textSize="20sp"
-            android:paddingVertical="10dp"
+            android:ems="10"
+            android:hint="Recipient's Account Number"
+            android:importantForAutofill="no"
+            android:inputType="number"
             android:paddingHorizontal='20sp'
+            android:paddingVertical="10dp"
+            android:textColor='@color/whiteText'
+            android:textColorHint="@color/whiteText"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/payer_account_no"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/transfermoneyheading" />
 
         <EditText
             android:id="@+id/transfer_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Amount"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/input_box"
-            android:textColorHint="@color/whiteText"
-            android:textColor='@color/whiteText'
-            android:textSize="20sp"
-            android:paddingVertical="10dp"
+            android:ems="10"
+            android:hint="Amount"
+            android:importantForAutofill="no"
+            android:inputType="number"
             android:paddingHorizontal='20sp'
+            android:paddingVertical="10dp"
+            android:textColor='@color/whiteText'
+            android:textColorHint="@color/whiteText"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipient_account_no"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/recipient_account_no" />
 
         <Button
             android:id="@+id/submit_transfer_money"

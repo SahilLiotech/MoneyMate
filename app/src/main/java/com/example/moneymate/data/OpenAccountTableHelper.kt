@@ -35,16 +35,16 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
 
     private val CREATE_TABLE = """
     CREATE TABLE IF NOT EXISTS $TABLE_NAME (
-        $COLUMN_ID INTEGER PRIMARY KEY,
-        $COLUMN_UID INTEGER,
-        $COLUMN_NAME TEXT,
-        $COLUMN_GENDER TEXT,
-        $COLUMN_MOBILE TEXT,
-        $COLUMN_EMAIL TEXT,
-        $COLUMN_DOB TEXT,
-        $COLUMN_PAN TEXT,
-        $COLUMN_ADDRESS TEXT,
-        $COLUMN_STATE TEXT,
+            $COLUMN_ID INTEGER PRIMARY KEY,
+            $COLUMN_UID INTEGER,
+            $COLUMN_NAME TEXT,
+            $COLUMN_GENDER TEXT,
+            $COLUMN_MOBILE TEXT,
+            $COLUMN_EMAIL TEXT,
+            $COLUMN_DOB TEXT,
+            $COLUMN_PAN TEXT,
+            $COLUMN_ADDRESS TEXT,
+            $COLUMN_STATE TEXT,
         $COLUMN_CITY TEXT,
         $COLUMN_PIN TEXT,
         $COLUMN_IFSC TEXT,
@@ -69,6 +69,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         onCreate(db)
     }
 
+    //this method insert the open account form data into the database
     fun openAccounnt(account:Account):Long {
         val db = writableDatabase
         onCreate(db)
@@ -98,15 +99,17 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         return result
     }
 
-    fun getAllAccounts(): List<Account> {
-        val accountList = mutableListOf<Account>()
-        val query = "SELECT * FROM $TABLE_NAME"
+
+    //this method fetch the account detail based on the user id
+    fun getAccountByUserId(userId: Int): Account?{
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UID = ?"
         val db = readableDatabase
-        val cursor = db.rawQuery(query, null)
+        val cursor = db.rawQuery(query, arrayOf(userId.toString()))
+
+        var account: Account? = null
 
         if (cursor.moveToFirst()) {
-            do {
-                val account = Account(
+                 account = Account(
                     accountNumber = cursor.getLong(0),
                     userid = cursor.getInt(1),
                     name = cursor.getString(2),
@@ -124,15 +127,42 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
                     nomineeName = cursor.getString(14),
                     nomineeAccount = cursor.getString(15),
                     nomineeAccountType = cursor.getString(16),
-                    accountOpenDate = cursor.getString(17),
+                     accountOpenDate = cursor.getString(17),
                     accountStatus = cursor.getString(18)
                 )
-                accountList.add(account)
-            } while (cursor.moveToNext())
         }
+        Log.d("user-debug",account.toString())
         cursor.close()
         db.close()
-        return accountList
+        return account
     }
+
+    //this function is used to get the account info(account name, account number and account balance) of user according to user id
+    fun getAccountDetailsByUserId(userId: Int): Triple<String,Long,Int>? {
+        val query = """
+        SELECT A.$COLUMN_NAME, A.$COLUMN_ID,T.$COLUMN_TOTAL_AMOUNT
+        FROM $TABLE_NAME A
+        LEFT JOIN ${TransactionTableHelper.TABLE_NAME} T ON A.$COLUMN_ID = T.$COLUMN_ACCOUNT_NUM
+        WHERE A.$COLUMN_UID = ?
+        """
+
+
+        val db = readableDatabase
+        val cursor = db.rawQuery(query, arrayOf(userId.toString()))
+
+        var accountDetails: Triple<String, Long, Int>? = null
+
+        if (cursor.moveToFirst()) {
+            val accountName = cursor.getString(0)
+            val accountNumber = cursor.getLong(1)
+            val totalAmount = cursor.getInt(2)
+            accountDetails = Triple(accountName, accountNumber, totalAmount)
+        }
+
+        cursor.close()
+        db.close()
+        return accountDetails
+    }
+
 
 }

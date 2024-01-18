@@ -1,8 +1,13 @@
 package com.example.moneymate
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
+import com.example.moneymate.data.OpenAccountTableHelper
+import com.example.moneymate.model.Account
 
 class AccountInfoActivity : AppCompatActivity() {
 
@@ -30,6 +35,12 @@ class AccountInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_info)
 
+        val prefs: SharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val userId = prefs.getInt("userId", -1)
+
+        val dbHelper = OpenAccountTableHelper(this)
+        val account = dbHelper.getAccountByUserId(userId)
+
 
         getName = findViewById(R.id.account_name)
         getAccountNO = findViewById(R.id.account_number)
@@ -50,6 +61,34 @@ class AccountInfoActivity : AppCompatActivity() {
         getAccountOpen = findViewById(R.id.account_open)
         getAccountStatus = findViewById(R.id.account_status)
 
+        displayAccountDetails(account)
+
 
     }
+
+    private fun displayAccountDetails(account: Account?) {
+        if (account != null) {
+            getName.text = "A/C Holder Name: "+account.name
+            getAccountNO.text = "A/C No: "+account.accountNumber.toString()
+            getGender.text = "Gender: "+account.gender
+            getMobile.text = "Mobile No: "+account.mobileNumber
+            getEmail.text = "Email Id: "+account.email
+            getDob.text = "Date Of Birth: "+account.dob
+            getPan.text = "Pan Card No: "+account.pan
+            getAddress.text = "Address: "+account.address
+            getCity.text = "City: "+account.city
+            getState.text = "State: "+account.state
+            getPin.text = "Pin Code: "+account.pincode
+            getIfsc.text = "IFSC Code: "+account.ifsc
+            getBranch.text = "Branch Name: "+account.branch
+            getNominee.text = "Nominee Name: "+account.nomineeName
+            getNomineeAccount.text = "Nominee A/C No: "+account.nomineeAccount
+            getNomineeAccountType.text = "Nominee A/C Type: "+account.nomineeAccountType
+            getAccountOpen.text="Account Open Date: "+account.accountOpenDate
+            getAccountStatus.text ="Account Status: "+ account.accountStatus
+        } else {
+            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

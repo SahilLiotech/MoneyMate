@@ -29,9 +29,6 @@ class LoginActivity : AppCompatActivity() {
         password = findViewById(R.id.passwordtxt)
         loginBtn = findViewById(R.id.loginbtn)
 
-        val prefs = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
-        val content = prefs.all
-        Log.d("content",content.toString())
 
         signupLink.setOnClickListener {
             val intent = Intent(this@LoginActivity,SignupActivity::class.java)
@@ -51,12 +48,10 @@ class LoginActivity : AppCompatActivity() {
 
         val userData = dbHelper.isValidUser(enteredUname, enteredPassword)
 
+
         if (userData != null) {
 
-            // User is valid, save user data in SharedPreferences
             saveUserInfo(userData)
-            // Log.d("db-debug", "user id: ${userData.id}")
-
             AlertDialog.Builder(this).create().apply {
                 setTitle("Successful Login")
                 setIcon(R.drawable.sucess)
