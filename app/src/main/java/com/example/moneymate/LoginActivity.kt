@@ -44,6 +44,14 @@ class LoginActivity : AppCompatActivity() {
         val enteredUname = uname.text.toString()
         val enteredPassword = password.text.toString()
 
+        if (enteredUname.isEmpty()) {
+            uname.error = "Username is required"
+        }
+
+        if (enteredPassword.isEmpty()) {
+            password.error = "Password is required"
+        }
+
         val dbHelper = RegistrationTableHelper(this)
 
         val userData = dbHelper.isValidUser(enteredUname, enteredPassword)
@@ -64,7 +72,15 @@ class LoginActivity : AppCompatActivity() {
                 show()
             }
         } else {
-            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+           AlertDialog.Builder(this).create().apply {
+               setTitle("Check Credentials")
+               setIcon(R.drawable.error)
+               setMessage("Incorrect username or password")
+               setButton(DialogInterface.BUTTON_POSITIVE,"OK"){ dialog,_->
+                   dialog.dismiss()
+               }
+               show()
+           }
         }
     }
 

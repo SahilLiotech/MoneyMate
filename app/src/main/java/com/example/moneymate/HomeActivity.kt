@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.RequestTableHelper
 import com.example.moneymate.model.Request
+import kotlinx.android.synthetic.main.activity_account_info.*
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var openAccountButton: Button
@@ -30,6 +31,16 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        heading = findViewById(R.id.home_heading)
+        openAccountButton = findViewById(R.id.open_account_btn)
+        transferMoneyButton = findViewById(R.id.transfer_money_btn)
+        checkBalance = findViewById(R.id.check_balance)
+        checkTransaction = findViewById(R.id.check_transaction)
+        requestDebit = findViewById(R.id.request_debit)
+        requestCheque = findViewById(R.id.request_cheque)
+        accountInfo = findViewById(R.id.account_info)
+        logout = findViewById(R.id.logout)
+
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
 
@@ -39,118 +50,127 @@ class HomeActivity : AppCompatActivity() {
         val dbHelper = OpenAccountTableHelper(this)
         val account = dbHelper.getAccountByUserId(userId)
 
-
         if (account != null) {
             accountNumber = account.accountNumber.toString()
         }
 
-
-        val data= sharedPreferences.all
-        Log.d("pref-data",data.toString())
-
-
-        heading = findViewById(R.id.home_heading)
         heading.text = "Welcome $uname"
 
-        openAccountButton = findViewById(R.id.open_account_btn)
+
         openAccountButton.setOnClickListener {
-            val intent = Intent(this, OpenAccountActivity::class.java)
-            startActivity(intent)
-        }
-
-        transferMoneyButton = findViewById(R.id.transfer_money_btn)
-        transferMoneyButton.setOnClickListener {
-            val intent = Intent(this@HomeActivity,TransferMoneyActivity::class.java)
-            startActivity(intent)
-        }
-
-        checkBalance = findViewById(R.id.check_balance)
-        checkBalance.setOnClickListener {
-            val intent = Intent(this@HomeActivity,AccountBalanceActivity::class.java)
-            startActivity(intent)
-        }
-
-        checkTransaction = findViewById(R.id.check_transaction)
-        checkTransaction.setOnClickListener {
-            val intent = Intent(this@HomeActivity,TransactionActivity::class.java)
-            startActivity(intent)
-        }
-
-        requestDebit = findViewById(R.id.request_debit)
-        requestDebit.setOnClickListener {
-
-            AlertDialog.Builder(this@HomeActivity).apply {
-                setTitle("Request For Debit Card")
-                setMessage("Are you sure you want to make a request for debit card with account number: $accountNumber ?")
-                setIcon(R.drawable.ic_info_black_24dp)
-
-                    setPositiveButton("Yes"){
-                        dialog, which->
-                            insertDebitRequest(accountNumber.toLong())
-                            dialog.dismiss()
-                    }
-
-                    setNegativeButton("No"){
-                        dialog, which ->
-                            dialog.dismiss()
-                    }
-                 show()
-             }
-        }
-
-        requestCheque = findViewById(R.id.request_cheque)
-        requestCheque.setOnClickListener {
-
-                 AlertDialog.Builder(this@HomeActivity).apply {
-                 setTitle("Request For Cheque Book")
-                 setMessage("Are you sure you want to make a request for cheque book with account number: $accountNumber ?")
-                 setIcon(R.drawable.ic_info_black_24dp)
-
-                 setPositiveButton("Yes"){
-                        dialog, which ->
-                            insertChequeBookRequest(accountNumber.toLong())
-                            dialog.dismiss()
-
-                 }
-
-                 setNegativeButton("No"){
-                        dialog, which ->
+            if (account==null){
+                val intent = Intent(this@HomeActivity, OpenAccountActivity::class.java)
+                startActivity(intent)
+            }
+            else {
+                AlertDialog.Builder(this).create().apply {
+                    setTitle("Already Account is Cretaed.")
+                    setIcon(R.drawable.ic_account_info)
+                    setMessage("You Already have an account you can't open one more account")
+                    setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
                         dialog.dismiss()
+                    }
+                    show()
                 }
-
-                show()
             }
         }
 
-        accountInfo = findViewById(R.id.account_info)
-        accountInfo.setOnClickListener {
-            val intent = Intent(this@HomeActivity,AccountInfoActivity::class.java)
-            startActivity(intent)
+        transferMoneyButton.setOnClickListener {
+            if (account == null) {
+                showOpenAccountDialog()
+            } else {
+                val intent = Intent(this@HomeActivity, TransferMoneyActivity::class.java)
+                startActivity(intent)
+            }
         }
 
-        logout = findViewById(R.id.logout)
-        logout.setOnClickListener {
+        checkBalance.setOnClickListener {
+            if (account == null) {
+                showOpenAccountDialog()
+            } else {
+                val intent = Intent(this@HomeActivity, AccountBalanceActivity::class.java)
+                startActivity(intent)
+            }
+        }
 
+        checkTransaction.setOnClickListener {
+            if (account == null) {
+                showOpenAccountDialog()
+            } else {
+                val intent = Intent(this@HomeActivity, TransactionActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        requestDebit.setOnClickListener {
+            if (account == null) {
+                showOpenAccountDialog()
+            } else {
+                AlertDialog.Builder(this@HomeActivity).apply {
+                    setTitle("Request For Debit Card")
+                    setMessage("Are you sure you want to make a request for debit card with account number: $accountNumber ?")
+                    setIcon(R.drawable.ic_info_black_24dp)
+                    setPositiveButton("Yes") { dialog, _ ->
+                        insertDebitRequest(accountNumber.toLong())
+                        dialog.dismiss()
+                    }
+                    setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    show()
+                }
+            }
+        }
+
+        requestCheque.setOnClickListener {
+            if (account == null) {
+                showOpenAccountDialog()
+            } else {
+                AlertDialog.Builder(this@HomeActivity).apply {
+                    setTitle("Request For Cheque Book")
+                    setMessage("Are you sure you want to make a request for cheque book with account number: $accountNumber ?")
+                    setIcon(R.drawable.ic_info_black_24dp)
+                    setPositiveButton("Yes") { dialog, _ ->
+                        insertChequeBookRequest(accountNumber.toLong())
+                        dialog.dismiss()
+                    }
+                    setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    show()
+                }
+            }
+        }
+
+        accountInfo.setOnClickListener {
+            if(account==null){
+                showOpenAccountDialog()
+            }
+            else {
+                val intent = Intent(this@HomeActivity, AccountInfoActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        logout.setOnClickListener {
             AlertDialog.Builder(this).apply {
                 setTitle("Logout From MoneyMate")
                 setMessage("Are you sure you want to logout from the MoneyMate?")
                 setIcon(R.drawable.ic_info_black_24dp)
-                setPositiveButton("Yes"){
-                   dialog, which ->
+                setPositiveButton("Yes") { _, _ ->
                     val sharedPreferences = getSharedPreferences("auth_pref", Context.MODE_PRIVATE)
-                    val editor:SharedPreferences.Editor = sharedPreferences.edit()
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
                     editor.clear()
                     editor.apply()
 
-                    val intent = Intent(this@HomeActivity,LoginActivity::class.java)
+                    val intent = Intent(this@HomeActivity, LoginActivity::class.java)
                     startActivity(intent)
                 }
-                setNegativeButton("No"){ dialog, _ ->
-                            dialog.dismiss()
+                setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
                 }
                 show()
             }
-
         }
     }
 
@@ -162,8 +182,6 @@ class HomeActivity : AppCompatActivity() {
             "Pending",
             ""
         )
-
-       // Log.d("debug-insert",request.toString())
         val success = dbHelper.insertRequest(request)
 
         if (success) {
@@ -213,6 +231,18 @@ class HomeActivity : AppCompatActivity() {
                 }
                 show()
             }
+        }
+    }
+
+    private fun showOpenAccountDialog(){
+        AlertDialog.Builder(this).create().apply {
+            setTitle("Access Denied.")
+            setIcon(R.drawable.error)
+            setMessage("To use this services please open an account first.")
+            setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
         }
     }
 

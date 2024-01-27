@@ -1,7 +1,9 @@
 package com.example.moneymate
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
@@ -9,7 +11,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.TransactionTableHelper
+import com.example.moneymate.model.Account
 import com.example.moneymate.model.Transaction
 
 class TransferMoneyActivity : AppCompatActivity() {
@@ -22,6 +26,12 @@ class TransferMoneyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transfer_money_activity)
 
+        val prefs: SharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val userId = prefs.getInt("userId", -1)
+
+        val dbHelper = OpenAccountTableHelper(this)
+        val account = dbHelper.getAccountByUserId(userId)
+
         transferBtn = findViewById(R.id.submit_transfer_money)
         recipientAccountNo = findViewById(R.id.recipient_account_no)
         transferAmount = findViewById(R.id.transfer_amount)
@@ -30,9 +40,9 @@ class TransferMoneyActivity : AppCompatActivity() {
             val recipientAccountNum = recipientAccountNo.text.toString().toLong()
             val transferMoneyAmount = transferAmount.text.toString().toInt()
 
-            if (recipientAccountNum != null && transferMoneyAmount != null)
+            if (recipientAccountNum != null && transferMoneyAmount != null && account != null)
             {
-                transferMoney(recipientAccountNum,transferMoneyAmount)
+                transferMoney(account.accountNumber,recipientAccountNum,transferMoneyAmount)
             }
             else
             {
@@ -41,12 +51,13 @@ class TransferMoneyActivity : AppCompatActivity() {
         }
     }
 
-    private fun transferMoney(recipientAccountNo:Long,transferAmount:Int){
+    private fun transferMoney(senderAccountNo:Long,recipientAccountNo:Long,transferAmount:Int){
         val dbHelper = TransactionTableHelper(this)
         val transactionType = "Transfer"
         val totalAmount = 500
 
         val transaction = Transaction(
+              senderAccountNo,
               recipientAccountNo,
               transactionType,
               transferAmount,

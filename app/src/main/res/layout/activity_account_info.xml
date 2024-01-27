@@ -208,34 +208,6 @@
             app:layout_constraintTop_toBottomOf="@+id/ifsc" />
 
         <TextView
-            android:id="@+id/nominee_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello"
-            android:textSize="18sp"
-            android:textColor="@color/blackText"
-            android:fontFamily="serif"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/branch" />
-
-        <TextView
-            android:id="@+id/nominee_account_no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello"
-            android:textSize="18sp"
-            android:textColor="@color/blackText"
-            android:fontFamily="serif"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nominee_name" />
-
-        <TextView
             android:id="@+id/account_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -247,7 +219,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nominee_account_no" />
+            app:layout_constraintTop_toBottomOf="@+id/branch" />
 
         <TextView
             android:id="@+id/account_open"

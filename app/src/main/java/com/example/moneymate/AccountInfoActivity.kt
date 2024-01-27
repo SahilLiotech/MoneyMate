@@ -24,9 +24,7 @@ class AccountInfoActivity : AppCompatActivity() {
     private lateinit var getPin:TextView
     private lateinit var getIfsc:TextView
     private lateinit var getBranch:TextView
-    private lateinit var getNominee:TextView
-    private lateinit var getNomineeAccount:TextView
-    private lateinit var getNomineeAccountType:TextView
+    private lateinit var getAccountType:TextView
     private lateinit var getAccountOpen:TextView
     private lateinit var getAccountStatus:TextView
 
@@ -55,9 +53,7 @@ class AccountInfoActivity : AppCompatActivity() {
         getPin = findViewById(R.id.pin_code)
         getIfsc = findViewById(R.id.ifsc)
         getBranch = findViewById(R.id.branch)
-        getNominee = findViewById(R.id.nominee_name)
-        getNomineeAccount = findViewById(R.id.nominee_account_no)
-        getNomineeAccountType = findViewById(R.id.account_type)
+        getAccountType = findViewById(R.id.account_type)
         getAccountOpen = findViewById(R.id.account_open)
         getAccountStatus = findViewById(R.id.account_status)
 
@@ -81,9 +77,7 @@ class AccountInfoActivity : AppCompatActivity() {
             getPin.text = "Pin Code: "+account.pincode
             getIfsc.text = "IFSC Code: "+account.ifsc
             getBranch.text = "Branch Name: "+account.branch
-            getNominee.text = "Nominee Name: "+account.nomineeName
-            getNomineeAccount.text = "Nominee A/C No: "+account.nomineeAccount
-            getNomineeAccountType.text = "Nominee A/C Type: "+account.nomineeAccountType
+            getAccountType.text = "A/C Type: "+account.accountType
             getAccountOpen.text="Account Open Date: "+account.accountOpenDate
             getAccountStatus.text ="Account Status: "+ account.accountStatus
         } else {

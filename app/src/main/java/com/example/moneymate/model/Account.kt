@@ -15,9 +15,7 @@ data class Account(
     var pincode: String,
     var ifsc: String,
     var branch: String,
-    var nomineeName: String,
-    var nomineeAccount: String,
-    var nomineeAccountType: String,
+    var accountType: String,
     var accountOpenDate: String,
     var accountStatus:String
 ){
@@ -38,9 +36,7 @@ data class Account(
                 pincode:$pincode
                 ifsc:$ifsc
                 branch:$branch
-                nomineeName:$nomineeName
-                nomineeAccount:$nomineeAccount
-                nomineeAccountType:$nomineeAccountType
+                accountType:$accountType
                 accountOpendate:$accountOpenDate
                 accountStatus:$accountStatus
            }

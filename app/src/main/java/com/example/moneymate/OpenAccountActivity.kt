@@ -28,8 +28,6 @@ class OpenAccountActivity : AppCompatActivity() {
     private lateinit var state: EditText
     private lateinit var city: EditText
     private lateinit var pinCode: EditText
-    private lateinit var nomineeName: EditText
-    private lateinit var nomineeAccountNo: EditText
     private lateinit var accountType: Spinner
     private lateinit var submitButton: Button
     private lateinit var accountTypeList: ArrayList<String>
@@ -56,8 +54,6 @@ class OpenAccountActivity : AppCompatActivity() {
         state = findViewById(R.id.state)
         city = findViewById(R.id.city)
         pinCode = findViewById(R.id.zip_code)
-        nomineeName = findViewById(R.id.nominee_name)
-        nomineeAccountNo = findViewById(R.id.nominee_account_no)
         accountType = findViewById(R.id.account_type)
         submitButton = findViewById(R.id.submit_account_request)
 
@@ -70,7 +66,9 @@ class OpenAccountActivity : AppCompatActivity() {
         accountType.adapter = arrayAdapter
 
         submitButton.setOnClickListener {
-            insertData()
+            if (validateFields()) {
+                insertData()
+            }
         }
     }
 
@@ -97,8 +95,6 @@ class OpenAccountActivity : AppCompatActivity() {
         val enteredPin = pinCode.text.toString()
         val ifsc = enteredCity + "123"
         val branch = enteredCity
-        val enteredNomineeName = nomineeName.text.toString()
-        val enteredNomineeAccountNo = nomineeAccountNo.text.toString()
         val enteredNomineeAccountType = accountType.selectedItem.toString()
 
         val dbHelper = OpenAccountTableHelper(this)
@@ -118,8 +114,6 @@ class OpenAccountActivity : AppCompatActivity() {
             enteredPin,
             ifsc,
             branch,
-            enteredNomineeName,
-            enteredNomineeAccountNo,
             enteredNomineeAccountType,
             "",
             "pending"
@@ -155,6 +149,93 @@ class OpenAccountActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun validateFields():Boolean{
+        val enteredName = name.text.toString()
+        val enteredMobileNumber = mobileNo.text.toString()
+        val enteredEmail = email.text.toString()
+        val enteredDOB = dob.text.toString()
+        val enteredPan = panCard.text.toString()
+        val enteredAddress = address.text.toString()
+        val enteredState = state.text.toString()
+        val enteredCity = city.text.toString()
+        val enteredPin = pinCode.text.toString()
+
+        fun isEmailValid(email: String): Boolean {
+            val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\$"
+            return email.matches(emailRegex.toRegex())
+        }
+
+        fun isMobileNumberValid(mobileNumber: String): Boolean {
+            val mobileRegex = "^[6-9]\\d{9}\$"
+            return mobileNumber.matches(mobileRegex.toRegex())
+        }
+
+        fun isPanCardValid(panCard: String): Boolean {
+            val panRegex = "[A-Z]{5}[0-9]{4}[A-Z]{1}"
+            return panCard.matches(panRegex.toRegex())
+        }
+
+        if (enteredName.isEmpty())
+        {
+            name.error = "Name is required."
+            return false
+        }
+
+        if(enteredMobileNumber.isEmpty()){
+            mobileNo.error = "Mobile Number is required."
+            return false
+        }
+        else if(!isMobileNumberValid(enteredMobileNumber)){
+            mobileNo.error = "Enter a valid mobile number."
+            return false
+        }
+
+        if(enteredEmail.isEmpty()){
+            email.error = "Email is required."
+            return false
+        } else if(!isEmailValid(enteredEmail)){
+            email.error = "Enter a valid email address."
+            return false
+        }
+
+        if(enteredDOB.isEmpty()){
+            dob.error = "DOB is required."
+            return false
+        }
+
+        if (enteredPan.isEmpty()){
+            panCard.error = "PanCard No. is required."
+            return false
+        }
+        else if (!isPanCardValid(enteredPan)){
+            panCard.error = "Enter a valid PanCard number."
+            return false
+        }
+
+        if (enteredAddress.isEmpty()){
+            address.error = "Address is required."
+            return false
+        }
+
+        if (enteredState.isEmpty()){
+            address.error = "State is required."
+            return false
+        }
+
+        if (enteredCity.isEmpty()){
+            city.error = "City is required."
+            return false
+        }
+
+        if (enteredPin.isEmpty()){
+            pinCode.error = "PinCode is required."
+            return false
+        }
+
+        return true
+    }
+
 
     private fun generateRandom12DigitNumber(): Long {
         val secureRandom = SecureRandom()

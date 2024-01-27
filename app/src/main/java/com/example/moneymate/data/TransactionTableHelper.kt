@@ -11,6 +11,7 @@ private const val DB_VERSION = 1
 private const val DB_NAME = "MoneyMate_Database"
 
 internal const val COLUMN_ACCOUNT_NUM = "account_no"
+internal const val COLUMN_RECEIVER_ACCOUNT_NUM = "receiver_account_no"
 private const val COLUMN_TRANSACTION_TYPE = "transaction_type"
 private const val COLUMN_AMOUNT = "amount"
 internal const val COLUMN_TOTAL_AMOUNT = "available_amount"
@@ -29,10 +30,12 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
         CREATE TABLE IF NOT EXISTS $TABLE_NAME(
             $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_ACCOUNT_NUM INTEGER,
+            $COLUMN_RECEIVER_ACCOUNT_NUM INTEGER,
             $COLUMN_TRANSACTION_TYPE TEXT,
             $COLUMN_AMOUNT INTEGER,
             $COLUMN_TOTAL_AMOUNT INTEGER,
-            $COLUMN_DONE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            $COLUMN_DONE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            Foreign Key ($COLUMN_ACCOUNT_NUM) REFERENCES Account(accountNumber)
         )
     """
 
@@ -53,6 +56,7 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
         onCreate(db)
         val values=ContentValues().apply {
             put(COLUMN_ACCOUNT_NUM,transaction.accountNo)
+            put(COLUMN_RECEIVER_ACCOUNT_NUM,transaction.receiverAccountNo)
             put(COLUMN_TRANSACTION_TYPE,transaction.transactionType)
             put(COLUMN_AMOUNT,transaction.amount)
             put(COLUMN_TOTAL_AMOUNT,transaction.totalAmount)
@@ -63,4 +67,28 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
         return result
     }
 
+    fun getTransactionDetail(accountNum:Long): List<Transaction>{
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ?"
+        val db = readableDatabase
+        onCreate(db)
+        val cursor = db.rawQuery(query, arrayOf(accountNum.toString()))
+        val transactions = mutableListOf<Transaction>()
+
+        while (cursor.moveToNext()) {
+            transactions.add(
+                Transaction(
+                    accountNo = cursor.getLong(1),
+                    receiverAccountNo = cursor.getLong(2),
+                    transactionType = cursor.getString(3),
+                    amount = cursor.getInt(4),
+                    totalAmount = cursor.getInt(5),
+                    doneAt = cursor.getString(6)
+                )
+            )
+        }
+        Log.d("user-debug",transactions.toString())
+        cursor.close()
+        db.close()
+        return transactions
+    }
 }

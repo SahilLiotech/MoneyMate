@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import kotlin.Triple
 import com.example.moneymate.model.Account
 
 private const val DB_VERSION = 1
@@ -25,9 +26,7 @@ private const val COLUMN_CITY = "city"
 private const val COLUMN_PIN = "pin"
 private const val COLUMN_IFSC = "ifsc"
 private const val COLUMN_BRANCH = "branch"
-private const val COLUMN_NOMINEE = "nominee_name"
-private const val COLUMN_NOMINEE_ACCOUNT_NO = "nominee_account_no"
-private const val COLUMN_NOMINEE_ACCOUNT_TYPE = "nominee_account_type"
+private const val COLUMN_ACCOUNT_TYPE = "nominee_account_type"
 private const val COLUMN_ACCOUNT_OPEN = "account_open_date"
 private const val COLUMN_ACCOUNT_STATUS = "account_status"
 
@@ -49,9 +48,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         $COLUMN_PIN TEXT,
         $COLUMN_IFSC TEXT,
         $COLUMN_BRANCH TEXT,
-        $COLUMN_NOMINEE TEXT,
-        $COLUMN_NOMINEE_ACCOUNT_NO TEXT,
-        $COLUMN_NOMINEE_ACCOUNT_TYPE TEXT,
+        $COLUMN_ACCOUNT_TYPE TEXT,
         $COLUMN_ACCOUNT_OPEN TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         $COLUMN_ACCOUNT_STATUS TEXT,
         Foreign Key ($COLUMN_UID) REFERENCES User(id)
@@ -88,9 +85,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
             put(COLUMN_PIN, account.pincode)
             put(COLUMN_IFSC, account.ifsc)
             put(COLUMN_BRANCH, account.branch)
-            put(COLUMN_NOMINEE, account.nomineeName)
-            put(COLUMN_NOMINEE_ACCOUNT_NO, account.nomineeAccount)
-            put(COLUMN_NOMINEE_ACCOUNT_TYPE, account.nomineeAccountType)
+            put(COLUMN_ACCOUNT_TYPE, account.accountType)
             put(COLUMN_ACCOUNT_STATUS, account.accountStatus)
         }
         Log.d("db-debug",values.toString())
@@ -104,8 +99,8 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
     fun getAccountByUserId(userId: Int): Account?{
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UID = ?"
         val db = readableDatabase
+        onCreate(db)
         val cursor = db.rawQuery(query, arrayOf(userId.toString()))
-
         var account: Account? = null
 
         if (cursor.moveToFirst()) {
@@ -124,11 +119,9 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
                     pincode = cursor.getString(11),
                     ifsc = cursor.getString(12),
                     branch = cursor.getString(13),
-                    nomineeName = cursor.getString(14),
-                    nomineeAccount = cursor.getString(15),
-                    nomineeAccountType = cursor.getString(16),
-                     accountOpenDate = cursor.getString(17),
-                    accountStatus = cursor.getString(18)
+                    accountType = cursor.getString(14),
+                     accountOpenDate = cursor.getString(15),
+                    accountStatus = cursor.getString(16)
                 )
         }
         Log.d("user-debug",account.toString())
@@ -138,31 +131,31 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
     }
 
     //this function is used to get the account info(account name, account number and account balance) of user according to user id
-    fun getAccountDetailsByUserId(userId: Int): Triple<String,Long,Int>? {
+    fun getAccountDetailsByUserId(userId: Int): Triple<Long, String, Int>? {
         val query = """
-        SELECT A.$COLUMN_NAME, A.$COLUMN_ID,T.$COLUMN_TOTAL_AMOUNT
+        SELECT A.$COLUMN_ID, A.$COLUMN_NAME, T.$COLUMN_TOTAL_AMOUNT
         FROM $TABLE_NAME A
         LEFT JOIN ${TransactionTableHelper.TABLE_NAME} T ON A.$COLUMN_ID = T.$COLUMN_ACCOUNT_NUM
         WHERE A.$COLUMN_UID = ?
-        """
-
+    """
 
         val db = readableDatabase
         val cursor = db.rawQuery(query, arrayOf(userId.toString()))
 
-        var accountDetails: Triple<String, Long, Int>? = null
+        var accountDetails: Triple<Long, String, Int>? = null
 
         if (cursor.moveToFirst()) {
-            val accountName = cursor.getString(0)
-            val accountNumber = cursor.getLong(1)
+            val accountNumber = cursor.getLong(0)
+            val accountName = cursor.getString(1)
             val totalAmount = cursor.getInt(2)
-            accountDetails = Triple(accountName, accountNumber, totalAmount)
+            accountDetails = Triple(accountNumber, accountName, totalAmount)
         }
 
         cursor.close()
         db.close()
         return accountDetails
     }
+
 
 
 }
