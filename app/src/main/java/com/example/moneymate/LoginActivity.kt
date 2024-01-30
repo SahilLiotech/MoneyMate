@@ -4,22 +4,23 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.TextView
+
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+
 import com.example.moneymate.data.RegistrationTableHelper
 import com.example.moneymate.model.User
-import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var uname: EditText
     private lateinit var password: EditText
     private lateinit var loginBtn: Button
+    private lateinit var signupLink: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +29,13 @@ class LoginActivity : AppCompatActivity() {
         uname = findViewById(R.id.unametxt)
         password = findViewById(R.id.passwordtxt)
         loginBtn = findViewById(R.id.loginbtn)
+        signupLink = findViewById(R.id.signupLink)
 
 
         signupLink.setOnClickListener {
             val intent = Intent(this@LoginActivity,SignupActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         loginBtn.setOnClickListener {

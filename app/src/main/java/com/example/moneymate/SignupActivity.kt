@@ -38,6 +38,7 @@ class SignupActivity : AppCompatActivity() {
         loginLink.setOnClickListener {
             val intent = Intent(this@SignupActivity, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
@@ -47,7 +48,15 @@ class SignupActivity : AppCompatActivity() {
         val userPassword = password.text.toString()
 
         val dbHelper = RegistrationTableHelper(this)
+        val userName = dbHelper.isUsernameExists(username)
+
+        if (userName){
+            uname.error = "Username is already exits choose different username"
+            return
+        }
+
         val userId = dbHelper.addUser(username, userEmail, userPassword)
+
 
         if (userId != -1L) {
             AlertDialog.Builder(this).create().apply {

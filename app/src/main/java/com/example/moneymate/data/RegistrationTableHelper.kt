@@ -83,6 +83,20 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
         return userList
     }
 
+    // check that if username already exits in the database or not
+    fun isUsernameExists(uname: String): Boolean {
+        val db = readableDatabase
+        onCreate(db)
+        val query = "SELECT COUNT(*) FROM $TABLE_NAME WHERE $COLUMN_UNAME = ?"
+        val cursor = db.rawQuery(query, arrayOf(uname))
+        cursor.moveToFirst()
+        val count = cursor.getInt(0)
+        cursor.close()
+        db.close()
+        return count > 0
+    }
+
+
     //this function check that entered uname and password in login activity is exist in the database or not
     fun isValidUser(uname: String, password: String): User? {
         val db = readableDatabase

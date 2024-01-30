@@ -1,5 +1,6 @@
 package com.example.moneymate
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.model.Account
 import java.security.SecureRandom
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 
@@ -65,6 +68,12 @@ class OpenAccountActivity : AppCompatActivity() {
         )
         accountType.adapter = arrayAdapter
 
+        dob.isFocusable = false
+        dob.isFocusableInTouchMode = false
+        dob.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         submitButton.setOnClickListener {
             if (validateFields()) {
                 insertData()
@@ -94,7 +103,6 @@ class OpenAccountActivity : AppCompatActivity() {
         val enteredCity = city.text.toString()
         val enteredPin = pinCode.text.toString()
         val ifsc = enteredCity + "123"
-        val branch = enteredCity
         val enteredNomineeAccountType = accountType.selectedItem.toString()
 
         val dbHelper = OpenAccountTableHelper(this)
@@ -113,7 +121,7 @@ class OpenAccountActivity : AppCompatActivity() {
             enteredCity,
             enteredPin,
             ifsc,
-            branch,
+            enteredCity,
             enteredNomineeAccountType,
             "",
             "pending"
@@ -236,6 +244,24 @@ class OpenAccountActivity : AppCompatActivity() {
         return true
     }
 
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                val selectedDate = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+                dob.setText(selectedDate)
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
+    }
 
     private fun generateRandom12DigitNumber(): Long {
         val secureRandom = SecureRandom()

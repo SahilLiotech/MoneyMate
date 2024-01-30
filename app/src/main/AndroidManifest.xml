@@ -9,15 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DebugActivity"></activity>
-        <activity android:name=".AccountInfoActivity" />
-        <activity android:name=".TransactionActivity" />
-        <activity android:name=".AccountBalanceActivity" />
-        <activity android:name=".TransferMoneyActivity" />
-        <activity android:name=".OpenAccountActivity" />
+        <activity android:name=".AccountInfoActivity" android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".TransactionActivity" android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".AccountBalanceActivity" android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".TransferMoneyActivity" android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".OpenAccountActivity" android:parentActivityName=".HomeActivity"/>
         <activity android:name=".HomeActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".LoginActivity"
+            android:parentActivityName=".SignupActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

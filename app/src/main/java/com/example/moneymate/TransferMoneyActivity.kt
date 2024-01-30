@@ -36,12 +36,15 @@ class TransferMoneyActivity : AppCompatActivity() {
         recipientAccountNo = findViewById(R.id.recipient_account_no)
         transferAmount = findViewById(R.id.transfer_amount)
 
+        val recipientAccountNum = recipientAccountNo.text.toString()
+        val transferMoneyAmount = transferAmount.text.toString()
+
         transferBtn.setOnClickListener {
-            val recipientAccountNum = recipientAccountNo.text.toString().toLong()
-            val transferMoneyAmount = transferAmount.text.toString().toInt()
 
             if (recipientAccountNum != null && transferMoneyAmount != null && account != null)
             {
+                val recipientAccountNum = recipientAccountNo.text.toString().toLong()
+                val transferMoneyAmount = transferAmount.text.toString().toInt()
                 transferMoney(account.accountNumber,recipientAccountNum,transferMoneyAmount)
             }
             else
@@ -53,7 +56,7 @@ class TransferMoneyActivity : AppCompatActivity() {
 
     private fun transferMoney(senderAccountNo:Long,recipientAccountNo:Long,transferAmount:Int){
         val dbHelper = TransactionTableHelper(this)
-        val transactionType = "Transfer"
+        val transactionType = "Transfer To $recipientAccountNo"
         val totalAmount = 500
 
         val transaction = Transaction(

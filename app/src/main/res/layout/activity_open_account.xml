@@ -126,7 +126,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="date"
+        android:inputType="none"
         android:background="@drawable/input_box"
         android:hint="Date Of Birth"
         android:textColor="@color/whiteText"

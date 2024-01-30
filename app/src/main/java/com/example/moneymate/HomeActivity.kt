@@ -13,7 +13,6 @@ import android.widget.TextView
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.RequestTableHelper
 import com.example.moneymate.model.Request
-import kotlinx.android.synthetic.main.activity_account_info.*
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var openAccountButton: Button
@@ -64,8 +63,8 @@ class HomeActivity : AppCompatActivity() {
             }
             else {
                 AlertDialog.Builder(this).create().apply {
-                    setTitle("Already Account is Cretaed.")
-                    setIcon(R.drawable.ic_account_info)
+                    setTitle("Already Account is Created.")
+                    setIcon(R.drawable.account_exists)
                     setMessage("You Already have an account you can't open one more account")
                     setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
                         dialog.dismiss()
@@ -158,7 +157,7 @@ class HomeActivity : AppCompatActivity() {
                 setMessage("Are you sure you want to logout from the MoneyMate?")
                 setIcon(R.drawable.ic_info_black_24dp)
                 setPositiveButton("Yes") { _, _ ->
-                    val sharedPreferences = getSharedPreferences("auth_pref", Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
                     val editor: SharedPreferences.Editor = sharedPreferences.edit()
                     editor.clear()
                     editor.apply()
