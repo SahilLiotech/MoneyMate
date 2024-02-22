@@ -164,6 +164,7 @@ class HomeActivity : AppCompatActivity() {
 
                     val intent = Intent(this@HomeActivity, LoginActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
                 setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()

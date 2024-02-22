@@ -15,6 +15,7 @@ import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.TransactionTableHelper
 import com.example.moneymate.model.Account
 import com.example.moneymate.model.Transaction
+import java.lang.NumberFormatException
 
 class TransferMoneyActivity : AppCompatActivity() {
 
@@ -38,19 +39,19 @@ class TransferMoneyActivity : AppCompatActivity() {
 
         val recipientAccountNum = recipientAccountNo.text.toString()
         val transferMoneyAmount = transferAmount.text.toString()
-
-        transferBtn.setOnClickListener {
-
-            if (recipientAccountNum != null && transferMoneyAmount != null && account != null)
-            {
-                val recipientAccountNum = recipientAccountNo.text.toString().toLong()
-                val transferMoneyAmount = transferAmount.text.toString().toInt()
-                transferMoney(account.accountNumber,recipientAccountNum,transferMoneyAmount)
+        try {
+            transferBtn.setOnClickListener {
+                if (recipientAccountNum != null && transferMoneyAmount != null && account != null) {
+                    val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
+                    val transferMoney = transferAmount.text.toString().toInt()
+                    transferMoney(account.accountNumber, recipientAccountNumber, transferMoney)
+                } else {
+                    Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT).show()
+                }
             }
-            else
-            {
-                Toast.makeText(applicationContext,"Some Error Occured",Toast.LENGTH_SHORT)
-            }
+        }
+        catch (e:NumberFormatException){
+            transferAmount.error = "Please enter valid amount"
         }
     }
 

@@ -21,19 +21,27 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var loginBtn: Button
     private lateinit var signupLink: TextView
+    private lateinit var staffLoginLink: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        uname = findViewById(R.id.unametxt)
-        password = findViewById(R.id.passwordtxt)
+//        uname = findViewById(R.id.unametxt)
+//        password = findViewById(R.id.passwordtxt)
         loginBtn = findViewById(R.id.loginbtn)
         signupLink = findViewById(R.id.signupLink)
+        staffLoginLink = findViewById(R.id.staffLoginLink)
 
 
         signupLink.setOnClickListener {
             val intent = Intent(this@LoginActivity,SignupActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        staffLoginLink.setOnClickListener{
+            val intent = Intent(this@LoginActivity,StaffLoginActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -15,17 +15,45 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:id="@+id/home_heading"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text=""
-            android:textSize="32sp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            app:fontFamily="serif"
-            android:textColor="@color/blackText"/>
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="413dp"
+                android:layout_height="194dp"
+                android:src="@drawable/bg_view"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="144dp"
+                android:layout_height="116dp"
+                android:src="@drawable/profile_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/home_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="User"
+                android:textColor="@color/whiteText"
+                android:textSize="32sp"
+                app:fontFamily="serif"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_icon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/open_account_btn"

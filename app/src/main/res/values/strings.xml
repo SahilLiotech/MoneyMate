@@ -26,4 +26,11 @@
     <string name="name">Name</string>
 
     <string name="account_type">Account Type</string>
+    <string name="staff_logo">Staff Logo</string>
+    <string name="login_as_user">Login As User</string>
+    <string name="staff_login_heading">Staff Login</string>
+    <string name="Dashboard_User">User</string>
+    <string name="staff_dashboard_heading">Staff Dashboard</string>
+    <string name="login_as_staff">Login As Staff</string>
+    <string name="add_staff">Add Staff</string>
 </resources>

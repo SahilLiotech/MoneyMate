@@ -9,43 +9,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".LoginActivity"
+        tools:context=".StaffLoginActivity"
         android:orientation="vertical"
         android:gravity="center"
-        >
+        android:layout_marginTop="50dp">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="162dp">
+        <TextView
+            android:id="@+id/loginHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/staff_login_heading"
+            android:textSize="48sp"
+            app:fontFamily="sans-serif-black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/bg_circle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/bg_circle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/loginHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/LoginHeading"
-                android:textColor="@color/whiteText"
-                android:textSize="56sp"
-                app:fontFamily="sans-serif-black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/bg_circle"
-                app:layout_constraintTop_toTopOf="@+id/bg_circle"
-                app:layout_constraintVertical_bias="0.333" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/staffLogo"
+            android:layout_width="152dp"
+            android:layout_height="139dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/staff_logo"
+            app:layout_constraintBottom_toTopOf="@+id/unametxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginHeading"
+            app:srcCompat="@drawable/staff" />
 
         <EditText
             android:id="@+id/unametxt"
@@ -61,7 +54,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginHeading"
+            app:layout_constraintTop_toBottomOf="@+id/staffLogo"
             android:importantForAutofill="no" />
 
         <EditText
@@ -83,15 +76,16 @@
             android:inputType="textPassword"/>
 
         <Button
-            android:id="@+id/loginbtn"
-            android:layout_width="wrap_content"
+            android:id="@+id/staffloginbtn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="40dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/signup_login_btn"
             android:text="@string/LoginBtn"
             android:textColor="@color/btnTextColor"
             android:textSize="20sp"
-            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -101,43 +95,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/blackText"
-                android:textSize="16sp"
-                android:text="@string/signupText"
-                android:layout_marginEnd="10dp"/>
-
-            <TextView
-                android:id="@+id/signupLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/signupLink"
-                android:textColor="@color/colorAccent"
-                android:textSize="16sp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/staffLoginLink"
+                android:id="@+id/userLoginLink"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"
-                android:gravity="center"
-                android:text="@string/login_as_staff"
+                android:text="@string/login_as_user"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="36sp"/>
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>
