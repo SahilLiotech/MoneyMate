@@ -22,7 +22,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+           android:contentDescription="TODO" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -33,7 +34,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView1"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/staff" />
+            app:srcCompat="@drawable/staff"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/textView"
@@ -55,7 +57,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginVertical="40dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="10dp"
             app:cardElevation="4dp"
@@ -63,6 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView1">
 
             <LinearLayout
+                android:id="@+id/userdetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -72,7 +75,8 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/user_icon" />
+                    android:src="@drawable/user_icon"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/text1"
@@ -80,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="User Detail"
+                    android:text="@string/user_detail"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -100,6 +104,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView1">
 
             <LinearLayout
+                android:id="@+id/bankaccountdetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -109,14 +114,15 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/bank_account" />
+                    android:src="@drawable/bank_account"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/text2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Bank Account Detail"
+                    android:text="@string/bank_account_detail"
                     android:fontFamily="serif"
                     android:textAlignment="center"
                     android:textColor="@color/whiteText"
@@ -138,6 +144,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView1">
 
             <LinearLayout
+                android:id="@+id/updatebankaccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -155,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="Update Bank Account Detail"
+                    android:text="@string/update_bank_account_detail"
                     android:textAlignment="center"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
@@ -176,6 +183,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView3">
 
             <LinearLayout
+                android:id="@+id/bankrequest"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -194,7 +202,7 @@
                     android:layout_marginTop="4dp"
                     android:textAlignment="center"
                     android:fontFamily="serif"
-                    android:text="Bank Account Requests"
+                    android:text="@string/bank_account_requests"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -214,6 +222,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <LinearLayout
+                android:id="@+id/debitrequest"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -231,7 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="Debit Card Requests"
+                    android:text="@string/debit_card_requests"
                     android:textAlignment="center"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
@@ -252,6 +261,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView5">
 
             <LinearLayout
+                android:id="@+id/chequerequest"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -270,7 +280,7 @@
                     android:textAlignment="center"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="Cheque Book Requests"
+                    android:text="@string/cheque_book_requests"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -290,6 +300,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView5">
 
             <LinearLayout
+                android:id="@+id/depositmoney"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -307,7 +318,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="Deposit"
+                    android:text="@string/deposit"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -327,6 +338,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView7">
 
             <LinearLayout
+                android:id="@+id/withdrawmoney"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -344,7 +356,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="Withdraw"
+                    android:text="@string/withdraw"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -364,6 +376,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView7">
 
             <LinearLayout
+                android:id="@+id/deactivatedaccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -383,7 +396,7 @@
                     android:textAlignment="center"
                     android:paddingHorizontal="4dp"
                     android:fontFamily="serif"
-                    android:text="Deactivated Bank Account"
+                    android:text="@string/deactivated_bank_account"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -403,6 +416,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView9">
 
             <LinearLayout
+                android:id="@+id/changepassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -422,7 +436,7 @@
                     android:textAlignment="center"
                     android:paddingHorizontal="4dp"
                     android:fontFamily="serif"
-                    android:text="Change Password"
+                    android:text="@string/change_password"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -442,6 +456,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView9">
 
             <LinearLayout
+                android:id="@+id/addstaff"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -461,7 +476,7 @@
                     android:textAlignment="center"
                     android:paddingHorizontal="4dp"
                     android:fontFamily="serif"
-                    android:text="Add Staff Member"
+                    android:text="@string/add_staff_member"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -481,6 +496,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView11">
 
             <LinearLayout
+                android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -498,7 +514,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="serif"
-                    android:text="Logout"
+                    android:text="@string/logout"
                     android:textColor="@color/whiteText"
                     android:textSize="18sp"
                     android:textStyle="bold" />

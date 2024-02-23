@@ -121,4 +121,12 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
         return user
     }
 
+//    Function To Delete The User Based On The UID
+
+    fun deleteUserById(uid:String):Int{
+        val db = writableDatabase
+        onCreate(db)
+        return db.delete(TABLE_NAME,"$COLUMN_ID=?", arrayOf(uid))
+    }
+
 }
