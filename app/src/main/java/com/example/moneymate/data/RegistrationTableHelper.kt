@@ -58,8 +58,8 @@ class RegistrationTableHelper(context: Context) : SQLiteOpenHelper(context, DB_N
     }
 
     //this function is use to fetch all the records from the database
-    fun viewData(): List<User> {
-        val userList = mutableListOf<User>()
+    fun viewData(): ArrayList<User> {
+        val userList = ArrayList<User>()
         val db = readableDatabase
         onCreate(db)
         val query = "SELECT * FROM $TABLE_NAME"

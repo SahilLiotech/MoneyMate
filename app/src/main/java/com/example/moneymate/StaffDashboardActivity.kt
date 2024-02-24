@@ -25,6 +25,7 @@ class StaffDashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_staff_dashboard)
         userDetails = findViewById(R.id.userdetail)
         addStaff = findViewById(R.id.addstaff)
+        logout = findViewById(R.id.logout)
 
         userDetails.setOnClickListener {
             val intent = Intent(this@StaffDashboardActivity,UserDetailsActivity::class.java)
@@ -38,5 +39,10 @@ class StaffDashboardActivity : AppCompatActivity() {
             finish()
         }
 
+        logout.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
