@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore='HardcodedText'
     android:layout_width="match_parent" android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,29 +22,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/ud_uname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:fontFamily="serif"
-            android:text="Username"
-            android:textColor="@color/blackText"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ud_id"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/ud_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="20dp"
             android:fontFamily="serif"
             android:text="Email"
             android:textColor="@color/blackText"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ud_uname"
+            app:layout_constraintStart_toEndOf="@+id/ud_id"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.508" />
 
@@ -51,15 +39,15 @@
             android:id="@+id/ud_delete_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
-            android:paddingHorizontal="10dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/signup_login_btn"
+            android:fontFamily="serif"
+            android:paddingHorizontal="10dp"
+            android:text="Delete"
             android:textColor="@color/whiteText"
             android:textSize="22sp"
-            android:fontFamily="serif"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ud_email"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

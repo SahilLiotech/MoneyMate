@@ -157,7 +157,7 @@ class HomeActivity : AppCompatActivity() {
                 setMessage("Are you sure you want to logout from the MoneyMate?")
                 setIcon(R.drawable.ic_info_black_24dp)
                 setPositiveButton("Yes") { _, _ ->
-                    val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+                    // val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
                     val editor: SharedPreferences.Editor = sharedPreferences.edit()
                     editor.clear()
                     editor.apply()
@@ -177,10 +177,10 @@ class HomeActivity : AppCompatActivity() {
     private fun insertDebitRequest(accountNumber:Long){
         val dbHelper = RequestTableHelper(this@HomeActivity)
         val request = Request(
-            accountNumber,
-            "Debit Card",
-            "Pending",
-            ""
+            accountNo = accountNumber,
+            requestType = "debit-card",
+            requestStatus = "Pending",
+            requestDate = ""
         )
         val success = dbHelper.insertRequest(request)
 
@@ -206,13 +206,12 @@ class HomeActivity : AppCompatActivity() {
     private fun insertChequeBookRequest(accountNumber:Long){
         val dbHelper = RequestTableHelper(this@HomeActivity)
         val request = Request(
-            accountNumber,
-            "Credit Card",
-            "Pending",
-            ""
+            accountNo = accountNumber,
+            requestType = "cheque-book",
+            requestStatus = "Pending",
+            requestDate = ""
         )
 
-        Log.d("debug-insert",request.toString())
         val success = dbHelper.insertRequest(request)
 
         if (success) {

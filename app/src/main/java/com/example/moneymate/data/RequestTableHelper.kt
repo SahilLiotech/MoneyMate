@@ -2,6 +2,7 @@ package com.example.moneymate.data
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
@@ -25,7 +26,7 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
             $COLUMN_ACCOUNT_NO INTEGER NOT NULL,
             $COLUMN_REQUEST_TYPE TEXT NOT NULL,
             $COLUMN_REQUEST_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            $COLUMN_REQUEST_STATUS TEXT NOT NULL,
+            $COLUMN_REQUEST_STATUS TEXT NOT NULL DEFAULT 'unhandled',
             FOREIGN KEY ($COLUMN_ACCOUNT_NO) REFERENCES Account(accountNumber)
         )
     """
@@ -49,7 +50,6 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
             put(COLUMN_REQUEST_TYPE,request.requestType)
             put(COLUMN_REQUEST_STATUS,request.requestStatus)
         }
-        Log.d("request-debug",request.toString())
         val result = db.insert(REQUEST_TABLE_NAME, null, values)
         db.close()
         return result != -1L
@@ -78,4 +78,35 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         db.close()
         return requestList
     }*/
+
+    /**
+     * This method is used to get all of the unhandled request of specific request type from the 'requests' table.
+     * There is no validation implemented yet for checking whether the 'requests' table has any
+     * corresponding records or not.
+     *
+     * The request type can either be:
+     *  1. debit-card request
+     *  2. cheque-book request
+     *
+     * @param requestType type of request that has to be fetched from the table.
+     * @return list of unhandled requests.
+     */
+    fun getAllRequestsOf(requestType: String): ArrayList<Request> {
+        val db = this.readableDatabase
+        val requestList: ArrayList<Request> = ArrayList()
+        val query = "SELECT * FROM $REQUEST_TABLE_NAME WHERE $COLUMN_REQUEST_STATUS = ? AND $COLUMN_REQUEST_TYPE = ?"
+        val cursor: Cursor = db.rawQuery(query, arrayOf("unhandled", requestType))
+        while (cursor.moveToNext()) {
+            val request = Request(
+                requestId = cursor.getInt(0),
+                accountNo = cursor.getLong(1),
+                requestType = cursor.getString(2),
+                requestDate = cursor.getString(3)
+            )
+            requestList.add(request)
+        }
+
+        cursor.close()
+        return requestList
+    }
 }

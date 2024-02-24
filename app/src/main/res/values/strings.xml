@@ -37,7 +37,6 @@
     <string name="bank_account_requests">Bank Account Requests</string>
     <string name="deposit">Deposit</string>
     <string name="add_staff_member">Add Staff Member</string>
-<!--    <string name="logout">Logout</string>-->
     <string name="change_password">Change Password</string>
     <string name="deactivated_bank_account">Deactivated Bank Account</string>
     <string name="withdraw">Withdraw</string>
@@ -45,4 +44,7 @@
     <string name="debit_card_requests">Debit Card Requests</string>
     <string name="cheque_book_requests">Cheque Book Requests</string>
     <string name="update_bank_account_detail">Update Bank Account Detail</string>
+
+    <string name="request_id">Request ID: %1$s</string>
+    <string name="account_id">Account ID: %1$s</string>
 </resources>
