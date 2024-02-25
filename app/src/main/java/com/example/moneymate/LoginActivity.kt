@@ -27,8 +27,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-//        uname = findViewById(R.id.unametxt)
-//        password = findViewById(R.id.passwordtxt)
+        uname = findViewById(R.id.unametxt)
+        password = findViewById(R.id.passwordtxt)
         loginBtn = findViewById(R.id.loginbtn)
         signupLink = findViewById(R.id.signupLink)
         staffLoginLink = findViewById(R.id.staffLoginLink)
@@ -99,10 +99,10 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreference = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreference.edit()
 
-        editor.putInt("userId", userData.id)
+        editor.putInt("userId", userData.id!!)
         editor.putString("uname", userData.uname)
         editor.putString("email", userData.email)
 
-        editor.commit()
+        editor.apply()
     }
 }

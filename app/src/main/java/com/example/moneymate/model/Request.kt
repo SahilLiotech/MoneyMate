@@ -1,10 +1,11 @@
 package com.example.moneymate.model
 
 data class Request(
-    var accountNo: Long,
-    var requestType: String,
-    var requestStatus: String,
-    var requestDate: String
+    var requestId: Int? = null,
+    var accountNo: Long? = null,
+    var requestType: String? = null,
+    var requestStatus: String? = null,
+    var requestDate: String? = null
 
 ){
     override fun toString(): String {

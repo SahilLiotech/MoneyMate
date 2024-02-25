@@ -25,18 +25,28 @@ class StaffDashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_staff_dashboard)
         userDetails = findViewById(R.id.userdetail)
         addStaff = findViewById(R.id.addstaff)
+        logout = findViewById(R.id.logout)
+        debitRequest = findViewById(R.id.debitrequest)
 
         userDetails.setOnClickListener {
             val intent = Intent(this@StaffDashboardActivity,UserDetailsActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         addStaff.setOnClickListener {
             val intent = Intent(this@StaffDashboardActivity,AddStaffActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
+        debitRequest.setOnClickListener {
+            intent = Intent(this@StaffDashboardActivity, DebitCardRequestsActivity::class.java)
+            startActivity(intent)
+        }
+
+        logout.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

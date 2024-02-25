@@ -1,11 +1,11 @@
 package com.example.moneymate.model
 
 data class User(
-    val id: Int,
-    val uname: String,
-    val email: String,
-    val password: String,
-    val regDate: String
+    val id: Int? = null,
+    val uname: String? = null,
+    val email: String? = null,
+    val password: String? = null,
+    val regDate: String? = null
 ) {
     override fun toString(): String {
         return """

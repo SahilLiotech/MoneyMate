@@ -4,16 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moneymate.adapters.UserDetailAdapter
+import com.example.moneymate.adapters.DebitCardRequestsAdapter
 
-class UserDetailsActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
+class DebitCardRequestsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_details)
+        setContentView(R.layout.activity_debit_card_requests)
 
-        recyclerView = findViewById(R.id.ud_recycler_view)
-        val adapter = UserDetailAdapter(this)
+        val recyclerView: RecyclerView = findViewById(R.id.dcr_recycler_view)
+        val adapter = DebitCardRequestsAdapter(this)
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
