@@ -44,7 +44,7 @@ class TransferMoneyActivity : AppCompatActivity() {
                 if (recipientAccountNum != null && transferMoneyAmount != null && account != null) {
                     val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
                     val transferMoney = transferAmount.text.toString().toInt()
-                    transferMoney(account.accountNumber, recipientAccountNumber, transferMoney)
+                    transferMoney(account.accountNumber!!, recipientAccountNumber, transferMoney)
                 } else {
                     Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT).show()
                 }

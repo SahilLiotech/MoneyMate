@@ -26,7 +26,7 @@ class TransactionActivity : AppCompatActivity() {
 
         if (account != null) {
             val dbHelper1 = TransactionTableHelper(this)
-            val transactions = dbHelper1.getTransactionDetail(account.accountNumber)
+            val transactions = dbHelper1.getTransactionDetail(account.accountNumber!!)
 
             for (transaction in transactions) {
                 val dateTime = transaction.doneAt

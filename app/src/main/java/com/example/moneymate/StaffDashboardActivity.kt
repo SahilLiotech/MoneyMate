@@ -27,14 +27,38 @@ class StaffDashboardActivity : AppCompatActivity() {
         addStaff = findViewById(R.id.addstaff)
         logout = findViewById(R.id.logout)
         debitRequest = findViewById(R.id.debitrequest)
+        chequeRequest =findViewById(R.id.chequerequest)
+        accountDetails = findViewById(R.id.bankaccountdetail)
+        accountRequest = findViewById(R.id.bankrequest)
+        deactivatedAccount = findViewById(R.id.deactivatedaccount)
 
         userDetails.setOnClickListener {
-            val intent = Intent(this@StaffDashboardActivity,UserDetailsActivity::class.java)
+            intent = Intent(this@StaffDashboardActivity,UserDetailsActivity::class.java)
             startActivity(intent)
         }
 
         addStaff.setOnClickListener {
-            val intent = Intent(this@StaffDashboardActivity,AddStaffActivity::class.java)
+            intent = Intent(this@StaffDashboardActivity,AddStaffActivity::class.java)
+            startActivity(intent)
+        }
+
+        accountDetails.setOnClickListener {
+            intent = Intent(this, ViewActiveAccountsActivity::class.java)
+            startActivity(intent)
+        }
+
+        accountRequest.setOnClickListener {
+            intent = Intent(this, BankAccountRequestsActivity::class.java)
+            startActivity(intent)
+        }
+
+        chequeRequest.setOnClickListener {
+            intent = Intent(this, ChequeBookRequestsActivity::class.java)
+            startActivity(intent)
+        }
+
+        deactivatedAccount.setOnClickListener {
+            intent = Intent(this, DeactivatedAccountsActivity::class.java)
             startActivity(intent)
         }
 
@@ -44,7 +68,7 @@ class StaffDashboardActivity : AppCompatActivity() {
         }
 
         logout.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
+            intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
             finish()
         }

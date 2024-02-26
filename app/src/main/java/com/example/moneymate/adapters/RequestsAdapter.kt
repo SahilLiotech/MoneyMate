@@ -12,11 +12,11 @@ import com.example.moneymate.R
 import com.example.moneymate.data.RequestTableHelper
 import com.example.moneymate.model.Request
 
-internal class DebitCardRequestsAdapter(private val context: Context) : RecyclerView.Adapter<DebitCardRequestsAdapter.ViewHolder>() {
-    private var debitCardRequests: ArrayList<Request>
+internal class RequestsAdapter(private val context: Context, private val requestType: String) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
+    private var requests: ArrayList<Request>
     init {
         val helper = RequestTableHelper(context)
-        debitCardRequests = helper.getAllRequestsOf("debit-card")
+        requests = helper.getAllRequestsOf(requestType)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,10 +26,10 @@ internal class DebitCardRequestsAdapter(private val context: Context) : Recycler
         return ViewHolder(myView)
     }
 
-    override fun getItemCount(): Int = debitCardRequests.size
+    override fun getItemCount(): Int = requests.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.request = debitCardRequests[position]
+        holder.request = requests[position]
         holder.setDetails()
     }
 
@@ -49,16 +49,28 @@ internal class DebitCardRequestsAdapter(private val context: Context) : Recycler
             accountIdTextView.text = txt
 
             approveButton.setOnClickListener {
-                AlertDialog.Builder(context).apply {
-                    setTitle("Approve")
-                    setMessage("Are you sure you want to approve the request of Account ID: ${request.accountNo}")
-                    setPositiveButton("Yes") { _, _ ->
-                    }
-
-                    setNegativeButton("No", null)
-                    setCancelable(false)
-                }.show()
+                showDialog("Approve", "Are you sure you want to approve the request of ${request.accountNo}", "Approved")
             }
+
+            rejectButton.setOnClickListener {
+                showDialog("Reject", "Are you sure you want to reject the request of ${request.accountNo}", "Rejected")
+            }
+        }
+
+        private fun showDialog(title: String, msg: String, status: String) {
+            AlertDialog.Builder(context).apply {
+                setTitle(title)
+                setMessage(msg)
+                setPositiveButton("Yes") { _, _ ->
+                    val helper = RequestTableHelper(context)
+                    helper.updateRequestStatus(request.requestId.toString(), requestType, status)
+                    requests.removeAt(adapterPosition)
+                    notifyItemRemoved(adapterPosition)
+                }
+
+                setNegativeButton("No", null)
+                setCancelable(false)
+            }.show()
         }
     }
 }

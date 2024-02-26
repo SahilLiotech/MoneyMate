@@ -6,14 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneymate.adapters.RequestsAdapter
 
-class DebitCardRequestsActivity : AppCompatActivity() {
+class ChequeBookRequestsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_debit_card_requests)
+        setContentView(R.layout.activity_cheque_book_requests)
 
-        val recyclerView: RecyclerView = findViewById(R.id.dcr_recycler_view)
-        val adapter = RequestsAdapter(this, "debit-card")
-
+        val adapter = RequestsAdapter(this, "cheque-book")
+        val recyclerView: RecyclerView = findViewById(R.id.cbr_recycler_view)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }

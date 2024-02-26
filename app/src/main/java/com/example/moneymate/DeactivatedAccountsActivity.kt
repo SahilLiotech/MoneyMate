@@ -4,17 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moneymate.adapters.RequestsAdapter
+import com.example.moneymate.adapters.AccountsAdapter
 
-class DebitCardRequestsActivity : AppCompatActivity() {
+class DeactivatedAccountsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_debit_card_requests)
-
-        val recyclerView: RecyclerView = findViewById(R.id.dcr_recycler_view)
-        val adapter = RequestsAdapter(this, "debit-card")
-
-        recyclerView.adapter = adapter
+        setContentView(R.layout.activity_deactivated_accounts)
+        val recyclerView: RecyclerView = findViewById(R.id.da_recycler_view)
+        recyclerView.adapter = AccountsAdapter(this, "deactivate")
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 }
