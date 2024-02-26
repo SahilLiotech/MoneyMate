@@ -26,7 +26,7 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
             $COLUMN_ACCOUNT_NO INTEGER NOT NULL,
             $COLUMN_REQUEST_TYPE TEXT NOT NULL,
             $COLUMN_REQUEST_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            $COLUMN_REQUEST_STATUS TEXT NOT NULL DEFAULT 'unhandled',
+            $COLUMN_REQUEST_STATUS TEXT NOT NULL DEFAULT 'Pending',
             FOREIGN KEY ($COLUMN_ACCOUNT_NO) REFERENCES Account(accountNumber)
         )
     """
@@ -48,36 +48,40 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         val values = ContentValues().apply {
             put(COLUMN_ACCOUNT_NO,request.accountNo)
             put(COLUMN_REQUEST_TYPE,request.requestType)
-            put(COLUMN_REQUEST_STATUS,request.requestStatus)
         }
         val result = db.insert(REQUEST_TABLE_NAME, null, values)
         db.close()
         return result != -1L
     }
 
-   /* fun getRequest():List<Request>{
-
-        val requestList = mutableListOf<Request>()
+    /**
+     * This method is used to get all the requests from the 'requests' table.
+     * No matter what the status of the request is, this always returns list of requests.
+     * Usually for debugging.
+     *
+     * @return list of requests.
+     */
+    fun getAllRequests(): ArrayList<Request> {
+        val requestList = ArrayList<Request>()
         val query = "SELECT * FROM $REQUEST_TABLE_NAME"
         val db = readableDatabase
+        onCreate(db)
         val cursor = db.rawQuery(query, null)
 
-        if (cursor.moveToFirst()) {
-            do {
-                val request = Request(
-                   requestId = cursor.getInt(0),
-                   accountNo = cursor.getLong(1),
-                   requestType = cursor.getString(2),
-                   requestDate = cursor.getString(3),
-                   requestStatus = cursor.getString(4)
-                )
-              requestList.add(request)
-            } while (cursor.moveToNext())
+        while (cursor.moveToNext()) {
+            val request = Request(
+                requestId = cursor.getInt(0),
+                accountNo = cursor.getLong(1),
+                requestType = cursor.getString(2),
+                requestDate = cursor.getString(3),
+                requestStatus = cursor.getString(4)
+            )
+            requestList.add(request)
         }
+
         cursor.close()
-        db.close()
         return requestList
-    }*/
+    }
 
     /**
      * This method is used to get all of the unhandled request of specific request type from the 'requests' table.
@@ -95,7 +99,7 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         val db = this.readableDatabase
         val requestList: ArrayList<Request> = ArrayList()
         val query = "SELECT * FROM $REQUEST_TABLE_NAME WHERE $COLUMN_REQUEST_STATUS = ? AND $COLUMN_REQUEST_TYPE = ?"
-        val cursor: Cursor = db.rawQuery(query, arrayOf("unhandled", requestType))
+        val cursor: Cursor = db.rawQuery(query, arrayOf("Pending", requestType))
         while (cursor.moveToNext()) {
             val request = Request(
                 requestId = cursor.getInt(0),
@@ -108,5 +112,20 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
 
         cursor.close()
         return requestList
+    }
+
+    /**
+     * This method is used to update the status of the request based on its ID and request type.
+     *
+     * @param requestId ID of the request.
+     * @param requestType Type of the request.
+     * @param status status of the request.
+     */
+    fun updateRequestStatus(requestId: String, requestType: String, status: String) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_REQUEST_STATUS, status)
+
+        db.update(REQUEST_TABLE_NAME, values, "$COLUMN_REQUEST_ID=? AND $COLUMN_REQUEST_TYPE=?", arrayOf(requestId, requestType))
     }
 }

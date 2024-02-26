@@ -61,7 +61,7 @@ class OpenAccountActivity : AppCompatActivity() {
         submitButton = findViewById(R.id.submit_account_request)
 
 
-        val arrayAdapter = ArrayAdapter<String>(
+        val arrayAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
             accountTypeList
@@ -126,8 +126,6 @@ class OpenAccountActivity : AppCompatActivity() {
             "",
             "pending"
         )
-
-        Log.d("db-open", account.toString())
 
         val success = dbHelper.openAccounnt(account)
 

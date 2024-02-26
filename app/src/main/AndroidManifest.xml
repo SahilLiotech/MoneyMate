@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DebitCardRequestsActivity"></activity>
+        <activity android:name=".DeactivatedAccountsActivity"></activity>
+        <activity android:name=".BankAccountRequestsActivity" />
+        <activity android:name=".ViewActiveAccountsActivity" />
+        <activity android:name=".ChequeBookRequestsActivity" />
+        <activity android:name=".DebitCardRequestsActivity" />
         <activity
             android:name=".UserDetailsActivity"
             android:parentActivityName=".StaffDashboardActivity" />
@@ -52,7 +56,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,23 +1,23 @@
 package com.example.moneymate.model
 
 data class Account(
-    var accountNumber: Long,
+    var accountNumber: Long? = null,
     var userid: Int = -1,
-    var name: String,
-    var gender: String,
-    var mobileNumber: String,
-    var email: String,
-    var dob: String,
-    var pan: String,
-    var address: String,
-    var state: String,
-    var city: String,
-    var pincode: String,
-    var ifsc: String,
-    var branch: String,
-    var accountType: String,
-    var accountOpenDate: String,
-    var accountStatus:String
+    var name: String? = null,
+    var gender: String? = null,
+    var mobileNumber: String? = null,
+    var email: String? = null,
+    var dob: String? = null,
+    var pan: String? = null,
+    var address: String? = null,
+    var state: String? = null,
+    var city: String? = null,
+    var pincode: String? = null,
+    var ifsc: String? = null,
+    var branch: String? = null,
+    var accountType: String? = null,
+    var accountOpenDate: String? = null,
+    var accountStatus: String? = null
 ){
     override fun toString(): String {
         return """

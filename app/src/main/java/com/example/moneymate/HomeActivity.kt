@@ -46,6 +46,12 @@ class HomeActivity : AppCompatActivity() {
         val prefs: SharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val userId = prefs.getInt("userId", -1)
 
+        val helper = OpenAccountTableHelper(this)
+
+        for (record in helper.getAccountList()) {
+            Log.d("req-dbg", record.toString())
+        }
+
         val dbHelper = OpenAccountTableHelper(this)
         val account = dbHelper.getAccountByUserId(userId)
 
@@ -174,13 +180,11 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertDebitRequest(accountNumber:Long){
+    private fun insertDebitRequest(accountNumber: Long) {
         val dbHelper = RequestTableHelper(this@HomeActivity)
         val request = Request(
             accountNo = accountNumber,
-            requestType = "debit-card",
-            requestStatus = "Pending",
-            requestDate = ""
+            requestType = "debit-card"
         )
         val success = dbHelper.insertRequest(request)
 

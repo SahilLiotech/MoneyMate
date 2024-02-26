@@ -17,6 +17,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:text="TextView"
+            android:textColor="@color/blackText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,26 +28,31 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="10dp"
             android:text="TextView"
+            android:textColor="@color/blackText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/dcr_request_id_textView"
             app:layout_constraintTop_toBottomOf="@+id/dcr_request_id_textView" />
 
         <Button
             android:id="@+id/dcr_reject_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="20dp"
             android:text="Reject"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/dcr_approve_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/rounded_btn"
             android:text="Approve"
+            android:textColor="@color/whiteText"
             app:layout_constraintBottom_toBottomOf="@+id/dcr_reject_btn"
             app:layout_constraintEnd_toStartOf="@+id/dcr_reject_btn"
             app:layout_constraintTop_toTopOf="@+id/dcr_reject_btn" />
