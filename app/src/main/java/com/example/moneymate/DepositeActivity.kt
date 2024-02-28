@@ -27,16 +27,15 @@ class DepositeActivity : AppCompatActivity() {
         receiverAccountNo = findViewById(R.id.account_no)
         amount = findViewById(R.id.deposit_amount)
         depositeBtn = findViewById(R.id.submit_deposit_money)
-        senderAccountNo = findViewById(R.id.sender_account_number)
+
 
         depositeBtn.setOnClickListener {
-           val accountNumber = receiverAccountNo.text.toString().toLong()
-            val senderAccountNumber = senderAccountNo.text.toString().toLong()
-           val depositAmount = amount.text.toString().toInt()
+            val accountNumber = receiverAccountNo.text.toString().toLong()
+            val depositAmount = amount.text.toString().toInt()
 
             val helper = TransactionTableHelper(this)
             val transaction = Transaction(
-                accountNo = senderAccountNumber,
+                -1,
                 amount = depositAmount,
                 doneAt = "",
                 receiverAccountNo = accountNumber,
@@ -45,8 +44,6 @@ class DepositeActivity : AppCompatActivity() {
             val res = helper.addTransaction(transaction)
             if (!res.second) {
                 Toast.makeText(this, res.first, Toast.LENGTH_SHORT).show()
-                // 517061984332
-                    // 672224781942
                 finish()
             } else {
                 Toast.makeText(this, res.first, Toast.LENGTH_SHORT).show()

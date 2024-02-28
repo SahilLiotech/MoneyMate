@@ -1,11 +1,11 @@
 package com.example.moneymate.model
 
 data class Transaction(
-    var accountNo:Long,
-    var receiverAccountNo:Long,
-    var transactionType:String,
-    var amount:Int,
-    var doneAt:String
+    var accountNo: Long? = null,
+    var receiverAccountNo: Long? = null,
+    var transactionType: String? = null,
+    var amount: Int? = null,
+    var doneAt: String? = null
 ) {
     override fun toString(): String {
         return """

@@ -134,7 +134,8 @@ class OpenAccountTableHelper(context: Context) :
     //this function is used to get the account info(account name, account number and account balance) of user according to user id
     fun getAccountDetailsByUserId(userId: Int): Account? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_UID=?", arrayOf(userId.toString()))
+        val cursor =
+            db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_UID=?", arrayOf(userId.toString()))
 
         if (!cursor.moveToFirst()) {
             return null
@@ -326,7 +327,10 @@ class OpenAccountTableHelper(context: Context) :
 
     fun getAmountOf(id: String): Int? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $COLUMN_TOTAL_AMOUNT FROM $TABLE_NAME WHERE $COLUMN_ID=?", arrayOf(id))
+        val cursor = db.rawQuery(
+            "SELECT $COLUMN_TOTAL_AMOUNT FROM $TABLE_NAME WHERE $COLUMN_ID=?",
+            arrayOf(id)
+        )
 
         if (!cursor.moveToFirst()) return null
 

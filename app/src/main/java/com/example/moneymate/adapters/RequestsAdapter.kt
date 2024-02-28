@@ -12,8 +12,10 @@ import com.example.moneymate.R
 import com.example.moneymate.data.RequestTableHelper
 import com.example.moneymate.model.Request
 
-internal class RequestsAdapter(private val context: Context, private val requestType: String) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
+internal class RequestsAdapter(private val context: Context, private val requestType: String) :
+    RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
     private var requests: ArrayList<Request>
+
     init {
         val helper = RequestTableHelper(context)
         requests = helper.getAllRequestsOf(requestType)
@@ -42,18 +44,32 @@ internal class RequestsAdapter(private val context: Context, private val request
             val approveButton: Button = itemView.findViewById(R.id.dcr_approve_btn)
             val rejectButton: Button = itemView.findViewById(R.id.dcr_reject_btn)
 
-            var txt = String.format(context.resources.getString(R.string.request_id), request.requestId.toString())
+            var txt = String.format(
+                context.resources.getString(R.string.request_id),
+                request.requestId.toString()
+            )
             reqIdTextView.text = txt
 
-            txt = String.format(context.resources.getString(R.string.account_id), request.accountNo.toString())
+            txt = String.format(
+                context.resources.getString(R.string.account_id),
+                request.accountNo.toString()
+            )
             accountIdTextView.text = txt
 
             approveButton.setOnClickListener {
-                showDialog("Approve", "Are you sure you want to approve the request of ${request.accountNo}", "Approved")
+                showDialog(
+                    "Approve",
+                    "Are you sure you want to approve the request of ${request.accountNo}",
+                    "Approved"
+                )
             }
 
             rejectButton.setOnClickListener {
-                showDialog("Reject", "Are you sure you want to reject the request of ${request.accountNo}", "Rejected")
+                showDialog(
+                    "Reject",
+                    "Are you sure you want to reject the request of ${request.accountNo}",
+                    "Rejected"
+                )
             }
         }
 

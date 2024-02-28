@@ -37,20 +37,33 @@ class TransferMoneyActivity : AppCompatActivity() {
         recipientAccountNo = findViewById(R.id.recipient_account_no)
         transferAmount = findViewById(R.id.transfer_amount)
 
-        val recipientAccountNum = recipientAccountNo.text.toString()
-        val transferMoneyAmount = transferAmount.text.toString()
-        try {
+        transferBtn.setOnClickListener {
+            val recipientAccountNum = recipientAccountNo.text.toString()
+            val transferMoneyAmount = transferAmount.text.toString()
             transferBtn.setOnClickListener {
-                if (recipientAccountNum != null && transferMoneyAmount != null && account != null) {
+                if (recipientAccountNum.trim() != "" && transferMoneyAmount.trim() != "") {
                     val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
                     val transferMoney = transferAmount.text.toString().toInt()
+
+                    val helper = OpenAccountTableHelper(this)
+                    val senderAmt = helper.getAmountOf(account?.accountNumber.toString())
+                    if (transferMoney > senderAmt!!) {
+                        Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Valid transaction", Toast.LENGTH_SHORT).show()
+                        val helper = TransactionTableHelper(this)
+                        val transaction = Transaction()
+                        transaction.accountNo = account?.accountNumber
+                        transaction.amount = transferMoney
+                        transaction.receiverAccountNo = recipientAccountNumber
+                        transaction.transactionType = "transfer"
+                        helper.addTransaction(transaction)
+                    }
                 } else {
                     Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
-        } catch (e: NumberFormatException) {
-            transferAmount.error = "Please enter valid amount"
         }
     }
 }

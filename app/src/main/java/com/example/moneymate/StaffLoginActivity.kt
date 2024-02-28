@@ -15,10 +15,10 @@ import com.example.moneymate.model.Staff
 
 class StaffLoginActivity : AppCompatActivity() {
 
-    private lateinit var userLoginLink:TextView
-    private lateinit var staffLoginLink:Button
-    private lateinit var userName:EditText
-    private lateinit var password:EditText
+    private lateinit var userLoginLink: TextView
+    private lateinit var staffLoginLink: Button
+    private lateinit var userName: EditText
+    private lateinit var password: EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +35,14 @@ class StaffLoginActivity : AppCompatActivity() {
             staffLogin()
         }
 
-        userLoginLink.setOnClickListener{
-            val intent = Intent(this@StaffLoginActivity,LoginActivity::class.java)
+        userLoginLink.setOnClickListener {
+            val intent = Intent(this@StaffLoginActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
 
-    private fun staffLogin(){
+    private fun staffLogin() {
         val enteredUname = userName.text.toString()
         val enteredPassword = password.text.toString()
 
@@ -66,7 +66,7 @@ class StaffLoginActivity : AppCompatActivity() {
                 setIcon(R.drawable.sucess)
                 setMessage("You Logged in Successfully")
                 setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
-                    val intent = Intent(this@StaffLoginActivity,StaffDashboardActivity::class.java)
+                    val intent = Intent(this@StaffLoginActivity, StaffDashboardActivity::class.java)
                     startActivity(intent)
                 }
                 show()
@@ -76,7 +76,7 @@ class StaffLoginActivity : AppCompatActivity() {
                 setTitle("Check Credentials")
                 setIcon(R.drawable.error)
                 setMessage("Incorrect username or password")
-                setButton(DialogInterface.BUTTON_POSITIVE,"OK"){ dialog, _->
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
                     dialog.dismiss()
                 }
                 show()

@@ -11,11 +11,11 @@ import com.example.moneymate.data.RegistrationTableHelper
 import com.example.moneymate.data.StaffRegistrationTableHelper
 
 class AddStaffActivity : AppCompatActivity() {
-    private lateinit var uname:EditText
-    private lateinit var email:EditText
-    private lateinit var password:EditText
-    private lateinit var cpassword:EditText
-    private lateinit var addStaffBtn:Button
+    private lateinit var uname: EditText
+    private lateinit var email: EditText
+    private lateinit var password: EditText
+    private lateinit var cpassword: EditText
+    private lateinit var addStaffBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_staff)
@@ -32,6 +32,7 @@ class AddStaffActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun addStaff() {
         val username = uname.text.toString()
         val userEmail = email.text.toString()
@@ -40,7 +41,7 @@ class AddStaffActivity : AppCompatActivity() {
         val dbHelper = StaffRegistrationTableHelper(this)
         val userName = dbHelper.isUsernameExists(username)
 
-        if (userName){
+        if (userName) {
             uname.error = "Username is already exits choose different username"
             return
         }

@@ -35,8 +35,8 @@ class TransactionActivity : AppCompatActivity() {
 
                 val newRow = TableRow(this)
 
-                val col1 = createTextView(dateTime)
-                val col2 = createTextView(transactionType)
+                val col1 = createTextView(dateTime!!)
+                val col2 = createTextView(transactionType!!)
                 val col3 = createTextView(amount.toString())
 
                 newRow.addView(col1)

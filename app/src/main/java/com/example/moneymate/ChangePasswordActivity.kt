@@ -12,12 +12,12 @@ import com.example.moneymate.data.RegistrationTableHelper
 class ChangePasswordActivity : AppCompatActivity() {
     private lateinit var oldpwd: EditText
     private lateinit var newpwd: EditText
-    private lateinit  var confirm: Button
+    private lateinit var confirm: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_password)
-        oldpwd= findViewById(R.id.old_password)
+        oldpwd = findViewById(R.id.old_password)
         newpwd = findViewById(R.id.new_password)
         confirm = findViewById(R.id.change_password_btn)
 
@@ -30,7 +30,7 @@ class ChangePasswordActivity : AppCompatActivity() {
 
             val dbHelper = RegistrationTableHelper(this)
             dbHelper.isOldPasswordCorrect(oldPassword = oldPassword, uid = userId.toString())
-            val matchedOldPassword = dbHelper.isOldPasswordCorrect(userId.toString(),oldPassword)
+            val matchedOldPassword = dbHelper.isOldPasswordCorrect(userId.toString(), oldPassword)
             if (matchedOldPassword) {
                 val updatedPassword = dbHelper.updateUserPassword(userId.toString(), newPassword)
                 if (updatedPassword > 0) {

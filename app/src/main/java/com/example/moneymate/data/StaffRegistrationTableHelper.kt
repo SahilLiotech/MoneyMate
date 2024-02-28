@@ -18,8 +18,10 @@ private const val COLUMN_EMAIL = "staff_email"
 private const val COLUMN_PASSWORD = "password"
 private const val COLUMN_REG_DATE = "registration_date"
 
-class StaffRegistrationTableHelper(context:Context):SQLiteOpenHelper(context, DB_NAME,null,
-    DB_VERSION) {
+class StaffRegistrationTableHelper(context: Context) : SQLiteOpenHelper(
+    context, DB_NAME, null,
+    DB_VERSION
+) {
 
     private val CREATE_TABLE = """CREATE TABLE IF NOT EXISTS $TABLE_NAME(
         $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,7 +54,7 @@ class StaffRegistrationTableHelper(context:Context):SQLiteOpenHelper(context, DB
         }
 
         val result = db.insert(TABLE_NAME, null, values)
-        Log.d("debug-staff-records",values.toString())
+        Log.d("debug-staff-records", values.toString())
         db.close()
         return result
     }
@@ -69,7 +71,7 @@ class StaffRegistrationTableHelper(context:Context):SQLiteOpenHelper(context, DB
         return count > 0
     }
 
-    fun isValidStaff(uname:String,password:String):Staff?{
+    fun isValidStaff(uname: String, password: String): Staff? {
         val db = readableDatabase
         onCreate(db)
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UNAME = ? AND $COLUMN_PASSWORD = ?"
@@ -91,7 +93,6 @@ class StaffRegistrationTableHelper(context:Context):SQLiteOpenHelper(context, DB
         db.close()
         return user
     }
-
 
 
 }

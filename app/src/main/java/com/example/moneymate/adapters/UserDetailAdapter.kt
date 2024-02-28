@@ -12,9 +12,10 @@ import com.example.moneymate.R
 import com.example.moneymate.data.RegistrationTableHelper
 import com.example.moneymate.model.User
 
-internal class UserDetailAdapter(val context:Context) :
+internal class UserDetailAdapter(val context: Context) :
     RecyclerView.Adapter<UserDetailAdapter.ViewHolder>() {
     private var usersList: ArrayList<User>
+
     init {
         val dbHelper = RegistrationTableHelper(context)
         usersList = dbHelper.viewData()
@@ -48,7 +49,7 @@ internal class UserDetailAdapter(val context:Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val myView = inflater.inflate(R.layout.user_row,parent,false)
+        val myView = inflater.inflate(R.layout.user_row, parent, false)
 
         return ViewHolder(myView)
     }

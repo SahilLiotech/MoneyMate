@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun isUserLoggedIn():Boolean{
+    fun isUserLoggedIn(): Boolean {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
 

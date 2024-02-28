@@ -1,27 +1,27 @@
-    package com.example.moneymate.model
+package com.example.moneymate.model
 
-    data class Account(
-        var accountNumber: Long? = null,
-        var userid: Int = -1,
-        var name: String? = null,
-        var gender: String? = null,
-        var mobileNumber: String? = null,
-        var email: String? = null,
-        var dob: String? = null,
-        var pan: String? = null,
-        var address: String? = null,
-        var state: String? = null,
-        var city: String? = null,
-        var pincode: String? = null,
-        var ifsc: String? = null,
-        var branch: String? = null,
-        var accountType: String? = null,
-        var amount: Int? = 500,
-        var accountOpenDate: String? = null,
-        var accountStatus: String? = null
-    ){
-        override fun toString(): String {
-            return """
+data class Account(
+    var accountNumber: Long? = null,
+    var userid: Int = -1,
+    var name: String? = null,
+    var gender: String? = null,
+    var mobileNumber: String? = null,
+    var email: String? = null,
+    var dob: String? = null,
+    var pan: String? = null,
+    var address: String? = null,
+    var state: String? = null,
+    var city: String? = null,
+    var pincode: String? = null,
+    var ifsc: String? = null,
+    var branch: String? = null,
+    var accountType: String? = null,
+    var amount: Int? = 500,
+    var accountOpenDate: String? = null,
+    var accountStatus: String? = null
+) {
+    override fun toString(): String {
+        return """
                Account:{
                     accountNumber:$accountNumber
                     userid:$userid
@@ -43,5 +43,5 @@
                     accountStatus:$accountStatus
                }
                """
-        }
     }
+}

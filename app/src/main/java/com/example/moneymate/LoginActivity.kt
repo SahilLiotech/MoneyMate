@@ -35,13 +35,13 @@ class LoginActivity : AppCompatActivity() {
 
 
         signupLink.setOnClickListener {
-            val intent = Intent(this@LoginActivity,SignupActivity::class.java)
+            val intent = Intent(this@LoginActivity, SignupActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        staffLoginLink.setOnClickListener{
-            val intent = Intent(this@LoginActivity,StaffLoginActivity::class.java)
+        staffLoginLink.setOnClickListener {
+            val intent = Intent(this@LoginActivity, StaffLoginActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -76,22 +76,22 @@ class LoginActivity : AppCompatActivity() {
                 setIcon(R.drawable.sucess)
                 setMessage("You Logged in Successfully")
                 setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
-                    val intent = Intent(this@LoginActivity,HomeActivity::class.java)
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                     startActivity(intent)
 
                 }
                 show()
             }
         } else {
-           AlertDialog.Builder(this).create().apply {
-               setTitle("Check Credentials")
-               setIcon(R.drawable.error)
-               setMessage("Incorrect username or password")
-               setButton(DialogInterface.BUTTON_POSITIVE,"OK"){ dialog,_->
-                   dialog.dismiss()
-               }
-               show()
-           }
+            AlertDialog.Builder(this).create().apply {
+                setTitle("Check Credentials")
+                setIcon(R.drawable.error)
+                setMessage("Incorrect username or password")
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                show()
+            }
         }
     }
 

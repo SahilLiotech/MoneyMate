@@ -42,26 +42,19 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         onCreate(db)
     }
 
-    fun insertRequest(request:Request):Boolean{
+    fun insertRequest(request: Request): Boolean {
         val db = writableDatabase
         onCreate(db)
         val values = ContentValues().apply {
-            put(COLUMN_ACCOUNT_NO,request.accountNo)
-            put(COLUMN_REQUEST_TYPE,request.requestType)
+            put(COLUMN_ACCOUNT_NO, request.accountNo)
+            put(COLUMN_REQUEST_TYPE, request.requestType)
         }
         val result = db.insert(REQUEST_TABLE_NAME, null, values)
         db.close()
-        Log.d("debug-request",values.toString())
+        Log.d("debug-request", values.toString())
         return result != -1L
     }
 
-    /**
-     * This method is used to get all the requests from the 'requests' table.
-     * No matter what the status of the request is, this always returns list of requests.
-     * Usually for debugging.
-     *
-     * @return list of requests.
-     */
     fun getAllRequests(): ArrayList<Request> {
         val requestList = ArrayList<Request>()
         val query = "SELECT * FROM $REQUEST_TABLE_NAME"
@@ -100,7 +93,8 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         val db = this.readableDatabase
         onCreate(db)
         val requestList: ArrayList<Request> = ArrayList()
-        val query = "SELECT * FROM $REQUEST_TABLE_NAME WHERE $COLUMN_REQUEST_STATUS = ? AND $COLUMN_REQUEST_TYPE = ?"
+        val query =
+            "SELECT * FROM $REQUEST_TABLE_NAME WHERE $COLUMN_REQUEST_STATUS = ? AND $COLUMN_REQUEST_TYPE = ?"
         val cursor: Cursor = db.rawQuery(query, arrayOf("Pending", requestType))
         while (cursor.moveToNext()) {
             val request = Request(
@@ -128,6 +122,11 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         val values = ContentValues()
         values.put(COLUMN_REQUEST_STATUS, status)
 
-        db.update(REQUEST_TABLE_NAME, values, "$COLUMN_REQUEST_ID=? AND $COLUMN_REQUEST_TYPE=?", arrayOf(requestId, requestType))
+        db.update(
+            REQUEST_TABLE_NAME,
+            values,
+            "$COLUMN_REQUEST_ID=? AND $COLUMN_REQUEST_TYPE=?",
+            arrayOf(requestId, requestType)
+        )
     }
 }

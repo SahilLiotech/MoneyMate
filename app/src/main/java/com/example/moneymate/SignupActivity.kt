@@ -50,7 +50,7 @@ class SignupActivity : AppCompatActivity() {
         val dbHelper = RegistrationTableHelper(this)
         val userName = dbHelper.isUsernameExists(username)
 
-        if (userName){
+        if (userName) {
             uname.error = "Username is already exits choose different username"
             return
         }

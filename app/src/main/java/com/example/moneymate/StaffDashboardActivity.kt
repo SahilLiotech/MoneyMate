@@ -52,20 +52,6 @@ class StaffDashboardActivity : AppCompatActivity() {
         val pref = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val staffUserName = pref.getString("staffName", "user")
 
-        val helper = TransactionTableHelper(this)
-        for (record in helper.getAllTransactions()) {
-            Log.d("db-debug", record.toString())
-        }
-
-        val userHelper = RegistrationTableHelper(this)
-        for (record in userHelper.viewData()) {
-            Log.d("db-debug", record.toString())
-        }
-
-        val accountTableHelper = OpenAccountTableHelper(this)
-        for (record in accountTableHelper.getAccountList()) {
-            Log.d("db-debug", record.toString())
-        }
 
         staffName.text = staffUserName
 
@@ -110,12 +96,12 @@ class StaffDashboardActivity : AppCompatActivity() {
         }
 
         withdrawMoney.setOnClickListener {
-            intent = Intent(this,WithdrawActivity::class.java)
+            intent = Intent(this, WithdrawActivity::class.java)
             startActivity(intent)
         }
 
         depositMoney.setOnClickListener {
-            intent = Intent(this,DepositeActivity::class.java)
+            intent = Intent(this, DepositeActivity::class.java)
             startActivity(intent)
         }
 

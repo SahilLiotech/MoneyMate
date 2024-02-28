@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:gravity="center"
-            android:text="@string/accountOpenHeading"
+            android:text="Bank Account Update Form"
             android:textColor="@color/blackText"
             android:textSize="20sp"
             android:textStyle="bold"
