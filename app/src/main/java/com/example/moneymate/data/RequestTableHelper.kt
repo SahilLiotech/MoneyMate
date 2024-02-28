@@ -51,6 +51,7 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
         }
         val result = db.insert(REQUEST_TABLE_NAME, null, values)
         db.close()
+        Log.d("debug-request",values.toString())
         return result != -1L
     }
 

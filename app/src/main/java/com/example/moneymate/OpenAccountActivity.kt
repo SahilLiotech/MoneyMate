@@ -86,7 +86,7 @@ class OpenAccountActivity : AppCompatActivity() {
         accountTypeList.add("Current Account")
     }
 
-    private fun insertData(){
+    private fun insertData() {
 
         val selectedId = radioGender.checkedRadioButtonId
         val selectedRadioButton: RadioButton = findViewById(selectedId)
@@ -103,7 +103,7 @@ class OpenAccountActivity : AppCompatActivity() {
         val enteredCity = city.text.toString()
         val enteredPin = pinCode.text.toString()
         val ifsc = enteredCity + "123"
-        val enteredNomineeAccountType = accountType.selectedItem.toString()
+        val enteredAccountType = accountType.selectedItem.toString()
 
         val dbHelper = OpenAccountTableHelper(this)
 
@@ -122,27 +122,25 @@ class OpenAccountActivity : AppCompatActivity() {
             enteredPin,
             ifsc,
             enteredCity,
-            enteredNomineeAccountType,
+            enteredAccountType,
             "",
             "pending"
         )
 
         val success = dbHelper.openAccounnt(account)
 
-        if(success != -1L){
+        if (success != -1L) {
             AlertDialog.Builder(this).create().apply {
                 setTitle("Account Open Sucessfully")
                 setMessage("Your Account is opened sucessfully wait for confirmation of active status")
                 setIcon(R.drawable.sucess)
-                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _ , _ ->
-                    val intent = Intent(this@OpenAccountActivity,HomeActivity::class.java)
+                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
+                    val intent = Intent(this@OpenAccountActivity, HomeActivity::class.java)
                     startActivity(intent)
                 }
                 show()
             }
-        }
-
-        else{
+        } else {
             AlertDialog.Builder(this).create().apply {
                 setTitle("Error occured")
                 setIcon(R.drawable.error)
@@ -156,7 +154,7 @@ class OpenAccountActivity : AppCompatActivity() {
 
     }
 
-    private fun validateFields():Boolean{
+    private fun validateFields(): Boolean {
         val enteredName = name.text.toString()
         val enteredMobileNumber = mobileNo.text.toString()
         val enteredEmail = email.text.toString()
@@ -182,59 +180,56 @@ class OpenAccountActivity : AppCompatActivity() {
             return panCard.matches(panRegex.toRegex())
         }
 
-        if (enteredName.isEmpty())
-        {
+        if (enteredName.isEmpty()) {
             name.error = "Name is required."
             return false
         }
 
-        if(enteredMobileNumber.isEmpty()){
+        if (enteredMobileNumber.isEmpty()) {
             mobileNo.error = "Mobile Number is required."
             return false
-        }
-        else if(!isMobileNumberValid(enteredMobileNumber)){
+        } else if (!isMobileNumberValid(enteredMobileNumber)) {
             mobileNo.error = "Enter a valid mobile number."
             return false
         }
 
-        if(enteredEmail.isEmpty()){
+        if (enteredEmail.isEmpty()) {
             email.error = "Email is required."
             return false
-        } else if(!isEmailValid(enteredEmail)){
+        } else if (!isEmailValid(enteredEmail)) {
             email.error = "Enter a valid email address."
             return false
         }
 
-        if(enteredDOB.isEmpty()){
+        if (enteredDOB.isEmpty()) {
             dob.error = "DOB is required."
             return false
         }
 
-        if (enteredPan.isEmpty()){
+        if (enteredPan.isEmpty()) {
             panCard.error = "PanCard No. is required."
             return false
-        }
-        else if (!isPanCardValid(enteredPan)){
+        } else if (!isPanCardValid(enteredPan)) {
             panCard.error = "Enter a valid PanCard number."
             return false
         }
 
-        if (enteredAddress.isEmpty()){
+        if (enteredAddress.isEmpty()) {
             address.error = "Address is required."
             return false
         }
 
-        if (enteredState.isEmpty()){
+        if (enteredState.isEmpty()) {
             address.error = "State is required."
             return false
         }
 
-        if (enteredCity.isEmpty()){
+        if (enteredCity.isEmpty()) {
             city.error = "City is required."
             return false
         }
 
-        if (enteredPin.isEmpty()){
+        if (enteredPin.isEmpty()) {
             pinCode.error = "PinCode is required."
             return false
         }

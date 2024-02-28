@@ -1,5 +1,6 @@
 package com.example.moneymate
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -16,16 +17,16 @@ import com.example.moneymate.model.Request
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var openAccountButton: Button
-    private lateinit var transferMoneyButton:Button
-    private lateinit var checkBalance:Button
-    private lateinit var checkTransaction:Button
-    private lateinit var requestDebit:Button
-    private lateinit var requestCheque:Button
-    private lateinit var accountInfo:Button
-    private lateinit var logout:Button
-    private lateinit var heading:TextView
-    private lateinit var accountNumber:String
-
+    private lateinit var transferMoneyButton: Button
+    private lateinit var checkBalance: Button
+    private lateinit var checkTransaction: Button
+    private lateinit var requestDebit: Button
+    private lateinit var requestCheque: Button
+    private lateinit var accountInfo: Button
+    private lateinit var changePassword: Button
+    private lateinit var logout: Button
+    private lateinit var heading: TextView
+    private lateinit var accountNumber: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -39,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
         requestCheque = findViewById(R.id.request_cheque)
         accountInfo = findViewById(R.id.account_info)
         logout = findViewById(R.id.logout)
+        changePassword = findViewById(R.id.changepassword)
 
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val uname = sharedPreferences.getString("uname", "user")
@@ -54,6 +56,7 @@ class HomeActivity : AppCompatActivity() {
 
         val dbHelper = OpenAccountTableHelper(this)
         val account = dbHelper.getAccountByUserId(userId)
+        val accountStatus = account?.accountStatus
 
         if (account != null) {
             accountNumber = account.accountNumber.toString()
@@ -63,11 +66,10 @@ class HomeActivity : AppCompatActivity() {
 
 
         openAccountButton.setOnClickListener {
-            if (account==null){
+            if (account == null) {
                 val intent = Intent(this@HomeActivity, OpenAccountActivity::class.java)
                 startActivity(intent)
-            }
-            else {
+            } else {
                 AlertDialog.Builder(this).create().apply {
                     setTitle("Already Account is Created.")
                     setIcon(R.drawable.account_exists)
@@ -83,6 +85,8 @@ class HomeActivity : AppCompatActivity() {
         transferMoneyButton.setOnClickListener {
             if (account == null) {
                 showOpenAccountDialog()
+            } else if (accountStatus != "active") {
+                waitAccountStatusDialog()
             } else {
                 val intent = Intent(this@HomeActivity, TransferMoneyActivity::class.java)
                 startActivity(intent)
@@ -92,6 +96,8 @@ class HomeActivity : AppCompatActivity() {
         checkBalance.setOnClickListener {
             if (account == null) {
                 showOpenAccountDialog()
+            } else if (accountStatus != "active") {
+                waitAccountStatusDialog()
             } else {
                 val intent = Intent(this@HomeActivity, AccountBalanceActivity::class.java)
                 startActivity(intent)
@@ -101,6 +107,8 @@ class HomeActivity : AppCompatActivity() {
         checkTransaction.setOnClickListener {
             if (account == null) {
                 showOpenAccountDialog()
+            } else if (accountStatus != "active") {
+                waitAccountStatusDialog()
             } else {
                 val intent = Intent(this@HomeActivity, TransactionActivity::class.java)
                 startActivity(intent)
@@ -110,6 +118,8 @@ class HomeActivity : AppCompatActivity() {
         requestDebit.setOnClickListener {
             if (account == null) {
                 showOpenAccountDialog()
+            } else if (accountStatus != "active") {
+                waitAccountStatusDialog()
             } else {
                 AlertDialog.Builder(this@HomeActivity).apply {
                     setTitle("Request For Debit Card")
@@ -130,6 +140,8 @@ class HomeActivity : AppCompatActivity() {
         requestCheque.setOnClickListener {
             if (account == null) {
                 showOpenAccountDialog()
+            } else if (accountStatus != "active") {
+                waitAccountStatusDialog()
             } else {
                 AlertDialog.Builder(this@HomeActivity).apply {
                     setTitle("Request For Cheque Book")
@@ -148,13 +160,19 @@ class HomeActivity : AppCompatActivity() {
         }
 
         accountInfo.setOnClickListener {
-            if(account==null){
+            if (account == null) {
                 showOpenAccountDialog()
-            }
-            else {
+            } else if (accountStatus != "active") {
+                waitAccountStatusDialog()
+            } else {
                 val intent = Intent(this@HomeActivity, AccountInfoActivity::class.java)
                 startActivity(intent)
             }
+        }
+
+        changePassword.setOnClickListener {
+            val intent = Intent(this@HomeActivity, ChangePasswordActivity::class.java)
+            startActivity(intent)
         }
 
         logout.setOnClickListener {
@@ -207,7 +225,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertChequeBookRequest(accountNumber:Long){
+    private fun insertChequeBookRequest(accountNumber: Long) {
         val dbHelper = RequestTableHelper(this@HomeActivity)
         val request = Request(
             accountNo = accountNumber,
@@ -237,7 +255,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showOpenAccountDialog(){
+    private fun showOpenAccountDialog() {
         AlertDialog.Builder(this).create().apply {
             setTitle("Access Denied.")
             setIcon(R.drawable.error)
@@ -249,12 +267,25 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun waitAccountStatusDialog() {
+        AlertDialog.Builder(this).create().apply {
+            setTitle("Access Denied.")
+            setIcon(R.drawable.ic_info_black_24dp)
+            setMessage("Please Wait till Your Account Is Not Activated")
+            setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
+        }
+    }
+
+
     override fun onBackPressed() {
         AlertDialog.Builder(this).apply {
             setTitle("Exit MoneyMate")
             setMessage("Are you sure you want to exit?")
             setIcon(R.drawable.ic_info_black_24dp)
-            setPositiveButton("Yes") { _ , _ ->
+            setPositiveButton("Yes") { _, _ ->
                 finishAffinity()
             }
             setNegativeButton("No") { dialog, _ ->

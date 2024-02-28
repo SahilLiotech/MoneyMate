@@ -90,7 +90,7 @@ class StaffLoginActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor = sharedPreference.edit()
 
         editor.putInt("staffId", staffData.id)
-        editor.putString("staffUname", staffData.uname)
+        editor.putString("staffName", staffData.uname)
         editor.putString("staffEmail", staffData.email)
 
         editor.commit()

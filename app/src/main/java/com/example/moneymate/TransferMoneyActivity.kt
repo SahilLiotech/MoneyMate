@@ -19,9 +19,9 @@ import java.lang.NumberFormatException
 
 class TransferMoneyActivity : AppCompatActivity() {
 
-    private lateinit var transferBtn:Button
-    private lateinit var recipientAccountNo:EditText
-    private lateinit var transferAmount:EditText
+    private lateinit var transferBtn: Button
+    private lateinit var recipientAccountNo: EditText
+    private lateinit var transferAmount: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,27 +46,32 @@ class TransferMoneyActivity : AppCompatActivity() {
                     val transferMoney = transferAmount.text.toString().toInt()
                     transferMoney(account.accountNumber!!, recipientAccountNumber, transferMoney)
                 } else {
-                    Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
-        }
-        catch (e:NumberFormatException){
+        } catch (e: NumberFormatException) {
             transferAmount.error = "Please enter valid amount"
         }
     }
 
-    private fun transferMoney(senderAccountNo:Long,recipientAccountNo:Long,transferAmount:Int){
+    private fun transferMoney(
+        senderAccountNo: Long,
+        recipientAccountNo: Long,
+        transferAmount: Int
+    ) {
         val dbHelper = TransactionTableHelper(this)
         val transactionType = "Transfer To $recipientAccountNo"
-        val totalAmount = 500
+        val currentTotalAmount = dbHelper.getTotalAmount(senderAccountNo)
+        val updatedTotalAmount = currentTotalAmount - transferAmount
 
         val transaction = Transaction(
-              senderAccountNo,
-              recipientAccountNo,
-              transactionType,
-              transferAmount,
-            totalAmount - transferAmount,
-             ""
+            senderAccountNo,
+            recipientAccountNo,
+            transactionType,
+            transferAmount,
+            updatedTotalAmount,
+            ""
         )
 
         val result = dbHelper.insertTransaction(transaction)
@@ -77,7 +82,7 @@ class TransferMoneyActivity : AppCompatActivity() {
                 setMessage("Your Transaction SucessFully Done...")
                 setIcon(R.drawable.sucess)
                 setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
-                    val intent = Intent(this@TransferMoneyActivity,HomeActivity::class.java)
+                    val intent = Intent(this@TransferMoneyActivity, HomeActivity::class.java)
                     startActivity(intent)
                 }
                 show()

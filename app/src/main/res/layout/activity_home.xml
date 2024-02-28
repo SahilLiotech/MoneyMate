@@ -169,6 +169,22 @@
             android:layout_marginLeft="18dp"/>
 
         <Button
+            android:id="@+id/changepassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/change_password"
+            android:background="@drawable/rounded_btn"
+            android:textColor="@color/whiteText"
+            app:fontFamily="serif"
+            android:drawableTop="@drawable/ic_change_password"
+            android:textSize="18sp"
+            android:padding="12sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"/>
+
+        <Button
             android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -30,32 +30,33 @@ private const val COLUMN_ACCOUNT_TYPE = "account_type"
 private const val COLUMN_ACCOUNT_OPEN = "account_open_date"
 private const val COLUMN_ACCOUNT_STATUS = "account_status"
 
-class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null,DB_VERSION) {
+class OpenAccountTableHelper(context: Context) :
+    SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     private val CREATE_TABLE = """
-    CREATE TABLE IF NOT EXISTS $TABLE_NAME (
-        $COLUMN_ID INTEGER PRIMARY KEY,
-        $COLUMN_UID INTEGER NOT NULL,
-        $COLUMN_NAME TEXT NOT NULL,
-        $COLUMN_GENDER TEXT NOT NULL,
-        $COLUMN_MOBILE TEXT NOT NULL,
-        $COLUMN_EMAIL TEXT NOT NULL,
-        $COLUMN_DOB TEXT NOT NULL,
-        $COLUMN_PAN TEXT NOT NULL,
-        $COLUMN_ADDRESS TEXT NOT NULL,
-        $COLUMN_STATE TEXT NOT NULL,
-        $COLUMN_CITY TEXT NOT NULL,
-        $COLUMN_PIN TEXT NOT NULL,
-        $COLUMN_IFSC TEXT NOT NULL,
-        $COLUMN_BRANCH TEXT NOT NULL,
-        $COLUMN_ACCOUNT_TYPE TEXT NOT NULL,
-        $COLUMN_ACCOUNT_OPEN TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        $COLUMN_ACCOUNT_STATUS TEXT NOT NULL,
-        Foreign Key ($COLUMN_UID) REFERENCES User(id)
-    )
-"""
+        CREATE TABLE IF NOT EXISTS $TABLE_NAME (
+            $COLUMN_ID INTEGER PRIMARY KEY,
+            $COLUMN_UID INTEGER NOT NULL,
+            $COLUMN_NAME TEXT NOT NULL,
+            $COLUMN_GENDER TEXT NOT NULL,
+            $COLUMN_MOBILE TEXT NOT NULL,
+            $COLUMN_EMAIL TEXT NOT NULL,
+            $COLUMN_DOB TEXT NOT NULL,
+            $COLUMN_PAN TEXT NOT NULL,
+            $COLUMN_ADDRESS TEXT NOT NULL,
+            $COLUMN_STATE TEXT NOT NULL,
+            $COLUMN_CITY TEXT NOT NULL,
+            $COLUMN_PIN TEXT NOT NULL,
+            $COLUMN_IFSC TEXT NOT NULL,
+            $COLUMN_BRANCH TEXT NOT NULL,
+            $COLUMN_ACCOUNT_TYPE TEXT NOT NULL,
+            $COLUMN_ACCOUNT_OPEN TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            $COLUMN_ACCOUNT_STATUS TEXT NOT NULL,
+            Foreign Key ($COLUMN_UID) REFERENCES User(id)
+        )
+    """
 
-    private val DROP_TABLE ="DROP TABLE IF EXISTS $TABLE_NAME "
+    private val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME "
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE)
@@ -67,7 +68,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
     }
 
     //this method insert the open account form data into the database
-    fun openAccounnt(account:Account):Long {
+    fun openAccounnt(account: Account): Long {
         val db = writableDatabase
         onCreate(db)
         val values = ContentValues().apply {
@@ -88,14 +89,14 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
             put(COLUMN_ACCOUNT_TYPE, account.accountType)
             put(COLUMN_ACCOUNT_STATUS, account.accountStatus)
         }
-        Log.d("db-debug",values.toString())
+        Log.d("db-debug", values.toString())
         val result = db.insert(TABLE_NAME, null, values)
         db.close()
         return result
     }
 
     //this method fetch the account detail based on the user id
-    fun getAccountByUserId(userId: Int): Account?{
+    fun getAccountByUserId(userId: Int): Account? {
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_UID = ?"
         val db = readableDatabase
         onCreate(db)
@@ -130,13 +131,14 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
     //this function is used to get the account info(account name, account number and account balance) of user according to user id
     fun getAccountDetailsByUserId(userId: Int): Triple<Long, String, Int>? {
         val query = """
-        SELECT A.$COLUMN_ID, A.$COLUMN_NAME, T.$COLUMN_TOTAL_AMOUNT
-        FROM $TABLE_NAME A
-        LEFT JOIN ${TransactionTableHelper.TABLE_NAME} T ON A.$COLUMN_ID = T.$COLUMN_ACCOUNT_NUM
-        WHERE A.$COLUMN_UID = ?
-    """
+            SELECT A.$COLUMN_ID, A.$COLUMN_NAME, T.$COLUMN_TOTAL_AMOUNT
+            FROM $TABLE_NAME A
+            LEFT JOIN ${TransactionTableHelper.TABLE_NAME} T ON A.$COLUMN_ID = T.$COLUMN_ACCOUNT_NUM
+            WHERE A.$COLUMN_UID = ?
+        """
 
         val db = readableDatabase
+        onCreate(db)
         val cursor = db.rawQuery(query, arrayOf(userId.toString()))
 
         var accountDetails: Triple<Long, String, Int>? = null
@@ -152,11 +154,45 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         return accountDetails
     }
 
+    //        This function is used to get the records from the database based on the account number(COLUMN_ID=account_no)
+    fun getAccountDetailsById(id: String): Account? {
+        val db = this.readableDatabase
+        onCreate(db)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID=?", arrayOf(id))
+
+        if (!cursor.moveToFirst()) return null
+
+        val account = Account(
+            accountNumber = cursor.getLong(0),
+            userid = cursor.getInt(1),
+            name = cursor.getString(2),
+            gender = cursor.getString(3),
+            mobileNumber = cursor.getString(4),
+            email = cursor.getString(5),
+            dob = cursor.getString(6),
+            pan = cursor.getString(7),
+            address = cursor.getString(8),
+            state = cursor.getString(9),
+            city = cursor.getString(10),
+            pincode = cursor.getString(11),
+            ifsc = cursor.getString(12),
+            branch = cursor.getString(13),
+            accountType = cursor.getString(14),
+            accountOpenDate = cursor.getString(15),
+            accountStatus = cursor.getString(16)
+        )
+
+        cursor.close()
+        return account
+    }
+
+//        Fetch all the records from the database
+
     fun getAccountList(): ArrayList<Account> {
         val db = this.readableDatabase
         val accounts: ArrayList<Account> = ArrayList()
+        onCreate(db)
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
-
         while (cursor.moveToNext()) {
             val account = Account(
                 accountNumber = cursor.getLong(0),
@@ -185,6 +221,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         return accounts
     }
 
+    //        This Function is used to get all the accounts details based on account status
     fun getAccountListOf(type: String): ArrayList<Account> {
         val db = this.readableDatabase
         val cursor = db.rawQuery(
@@ -221,6 +258,7 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         return accountList
     }
 
+    //        This function is update the status of account
     fun updateAccountStatus(id: String, status: String) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -228,5 +266,35 @@ class OpenAccountTableHelper(context: Context): SQLiteOpenHelper(context, DB_NAM
         }
 
         db.update(TABLE_NAME, values, "$COLUMN_ID=?", arrayOf(id))
+    }
+
+    //        This function is update the bank detail of user based on his/her account no
+    fun updateAccountDetails(
+        accountNo: String,
+        name: String,
+        gender: String,
+        mobile: String,
+        email: String,
+        dob: String,
+        pan: String,
+        address: String,
+        state: String,
+        city: String,
+        zip: String
+    ): Int {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_NAME, name)
+            put(COLUMN_GENDER, gender)
+            put(COLUMN_MOBILE, mobile)
+            put(COLUMN_EMAIL, email)
+            put(COLUMN_DOB, dob)
+            put(COLUMN_PAN, pan)
+            put(COLUMN_ADDRESS, address)
+            put(COLUMN_STATE, state)
+            put(COLUMN_CITY, city)
+            put(COLUMN_PIN, zip)
+        }
+        return db.update(TABLE_NAME, values, "$COLUMN_ID=?", arrayOf(accountNo))
     }
 }

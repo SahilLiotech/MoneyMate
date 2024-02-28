@@ -33,7 +33,7 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
             $COLUMN_RECEIVER_ACCOUNT_NUM INTEGER NOT NULL,
             $COLUMN_TRANSACTION_TYPE TEXT NOT NULL,
             $COLUMN_AMOUNT INTEGER NOT NULL,
-            $COLUMN_TOTAL_AMOUNT INTEGER NOT NULL,
+            $COLUMN_TOTAL_AMOUNT INTEGER NOT NULL DEFAULT 0,
             $COLUMN_DONE TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             Foreign Key ($COLUMN_ACCOUNT_NUM) REFERENCES Account(accountNumber)
         )
@@ -91,4 +91,23 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
         db.close()
         return transactions
     }
+
+    fun getTotalAmount(accountNo: Long): Int {
+        val db = this.readableDatabase
+        var totalAmount = 0
+
+        val query = "SELECT $COLUMN_TOTAL_AMOUNT FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ?"
+        val cursor = db.rawQuery(query, arrayOf(accountNo.toString()))
+
+        if (cursor.moveToFirst()) {
+            totalAmount = cursor.getInt(0)
+        }
+
+        cursor.close()
+        db.close()
+
+        return totalAmount
+    }
+
+
 }
