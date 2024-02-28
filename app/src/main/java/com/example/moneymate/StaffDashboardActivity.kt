@@ -6,11 +6,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.example.moneymate.data.OpenAccountTableHelper
+import com.example.moneymate.data.RegistrationTableHelper
+import com.example.moneymate.data.TransactionTableHelper
 import com.example.moneymate.model.Account
 
 class StaffDashboardActivity : AppCompatActivity() {
@@ -49,8 +52,22 @@ class StaffDashboardActivity : AppCompatActivity() {
         val pref = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val staffUserName = pref.getString("staffName", "user")
 
-        staffName.text = staffUserName
+        val helper = TransactionTableHelper(this)
+        for (record in helper.getAllTransactions()) {
+            Log.d("db-debug", record.toString())
+        }
 
+        val userHelper = RegistrationTableHelper(this)
+        for (record in userHelper.viewData()) {
+            Log.d("db-debug", record.toString())
+        }
+
+        val accountTableHelper = OpenAccountTableHelper(this)
+        for (record in accountTableHelper.getAccountList()) {
+            Log.d("db-debug", record.toString())
+        }
+
+        staffName.text = staffUserName
 
         userDetails.setOnClickListener {
             intent = Intent(this@StaffDashboardActivity, UserDetailsActivity::class.java)
@@ -153,9 +170,10 @@ class StaffDashboardActivity : AppCompatActivity() {
                             "Found an account",
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.d("db-debug", account.toString())
                         intent =
                             Intent(this@StaffDashboardActivity, UpdateAccountActivity::class.java)
-                        intent.putExtra("accountNumber", account.accountNumber)
+                        intent.putExtra("accountNumber", account.accountNumber.toString())
                         intent.putExtra("address", account.address)
                         intent.putExtra("city", account.city)
                         intent.putExtra("state", account.state)

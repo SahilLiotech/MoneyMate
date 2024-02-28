@@ -14,12 +14,11 @@ internal const val COLUMN_ACCOUNT_NUM = "account_no"
 internal const val COLUMN_RECEIVER_ACCOUNT_NUM = "receiver_account_no"
 private const val COLUMN_TRANSACTION_TYPE = "transaction_type"
 private const val COLUMN_AMOUNT = "amount"
-internal const val COLUMN_TOTAL_AMOUNT = "available_amount"
 private const val COLUMN_DONE = "done_at"
 
 
 
-class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME,null, DB_VERSION) {
+class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(context, DB_NAME,null, DB_VERSION) {
 
     companion object{
         internal const val TABLE_NAME = "transactions"
@@ -33,7 +32,6 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
             $COLUMN_RECEIVER_ACCOUNT_NUM INTEGER NOT NULL,
             $COLUMN_TRANSACTION_TYPE TEXT NOT NULL,
             $COLUMN_AMOUNT INTEGER NOT NULL,
-            $COLUMN_TOTAL_AMOUNT INTEGER NOT NULL DEFAULT 0,
             $COLUMN_DONE TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             Foreign Key ($COLUMN_ACCOUNT_NUM) REFERENCES Account(accountNumber)
         )
@@ -50,23 +48,6 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
         onCreate(db)
     }
 
-    //this method insert the transaction data into the database
-    fun insertTransaction(transaction: Transaction):Long{
-        val db = writableDatabase
-        onCreate(db)
-        val values=ContentValues().apply {
-            put(COLUMN_ACCOUNT_NUM,transaction.accountNo)
-            put(COLUMN_RECEIVER_ACCOUNT_NUM,transaction.receiverAccountNo)
-            put(COLUMN_TRANSACTION_TYPE,transaction.transactionType)
-            put(COLUMN_AMOUNT,transaction.amount)
-            put(COLUMN_TOTAL_AMOUNT,transaction.totalAmount)
-        }
-        Log.d("debug-transaction",values.toString())
-        val result = db.insert(TABLE_NAME, null, values)
-        db.close()
-        return result
-    }
-
     fun getTransactionDetail(accountNum:Long): List<Transaction>{
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ?"
         val db = readableDatabase
@@ -81,8 +62,7 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
                     receiverAccountNo = cursor.getLong(2),
                     transactionType = cursor.getString(3),
                     amount = cursor.getInt(4),
-                    totalAmount = cursor.getInt(5),
-                    doneAt = cursor.getString(6)
+                    doneAt = cursor.getString(5)
                 )
             )
         }
@@ -92,22 +72,49 @@ class TransactionTableHelper(context: Context):SQLiteOpenHelper(context, DB_NAME
         return transactions
     }
 
-    fun getTotalAmount(accountNo: Long): Int {
-        val db = this.readableDatabase
-        var totalAmount = 0
-
-        val query = "SELECT $COLUMN_TOTAL_AMOUNT FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ?"
-        val cursor = db.rawQuery(query, arrayOf(accountNo.toString()))
-
-        if (cursor.moveToFirst()) {
-            totalAmount = cursor.getInt(0)
+    fun addTransaction(transaction: Transaction): Pair<String, Boolean> {
+        val db = this.writableDatabase
+        onCreate(db)
+        val helper = OpenAccountTableHelper(context)
+        if (transaction.accountNo == transaction.receiverAccountNo) {
+            return Pair("Cannot transfer money to self", false)
         }
+        val senderAmt = helper.getAmountOf(transaction.accountNo.toString()) ?: return Pair("Invalid account number", false)
+        if (transaction.amount > senderAmt) return Pair("Insufficient balance", false)
+        helper.updateAmountOf(transaction.accountNo.toString(), senderAmt - transaction.amount)
+        val recvAmt = helper.getAmountOf(transaction.receiverAccountNo.toString()) ?: return Pair("Invalid receiver account number", false)
+        helper.updateAmountOf(transaction.receiverAccountNo.toString(), recvAmt + transaction.amount)
+        val values = ContentValues().apply {
+            put(COLUMN_ACCOUNT_NUM,transaction.accountNo)
+            put(COLUMN_RECEIVER_ACCOUNT_NUM,transaction.receiverAccountNo)
+            put(COLUMN_TRANSACTION_TYPE,transaction.transactionType)
+            put(COLUMN_AMOUNT,transaction.amount)
+        }
+        db.insert(TABLE_NAME, null, values)
 
-        cursor.close()
-        db.close()
-
-        return totalAmount
+        return Pair("transaction completed", true)
+        // 517061984332
     }
 
+    fun getAllTransactions(): ArrayList<Transaction> {
+        val query = "SELECT * FROM $TABLE_NAME"
+        val db = readableDatabase
+        onCreate(db)
+        val cursor = db.rawQuery(query, null)
+        val transactions = ArrayList<Transaction>()
 
+        while (cursor.moveToNext()) {
+            transactions.add(
+                Transaction(
+                    accountNo = cursor.getLong(1),
+                    receiverAccountNo = cursor.getLong(2),
+                    transactionType = cursor.getString(3),
+                    amount = cursor.getInt(4),
+                    doneAt = cursor.getString(5)
+                )
+            )
+        }
+        cursor.close()
+        return transactions
+    }
 }

@@ -27,6 +27,7 @@ private const val COLUMN_PIN = "pin"
 private const val COLUMN_IFSC = "ifsc"
 private const val COLUMN_BRANCH = "branch"
 private const val COLUMN_ACCOUNT_TYPE = "account_type"
+internal const val COLUMN_TOTAL_AMOUNT = "available_amount"
 private const val COLUMN_ACCOUNT_OPEN = "account_open_date"
 private const val COLUMN_ACCOUNT_STATUS = "account_status"
 
@@ -50,6 +51,7 @@ class OpenAccountTableHelper(context: Context) :
             $COLUMN_IFSC TEXT NOT NULL,
             $COLUMN_BRANCH TEXT NOT NULL,
             $COLUMN_ACCOUNT_TYPE TEXT NOT NULL,
+            $COLUMN_TOTAL_AMOUNT INTEGER DEFAULT 500 NOT NULL,
             $COLUMN_ACCOUNT_OPEN TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             $COLUMN_ACCOUNT_STATUS TEXT NOT NULL,
             Foreign Key ($COLUMN_UID) REFERENCES User(id)
@@ -120,8 +122,9 @@ class OpenAccountTableHelper(context: Context) :
                 ifsc = cursor.getString(12),
                 branch = cursor.getString(13),
                 accountType = cursor.getString(14),
-                accountOpenDate = cursor.getString(15),
-                accountStatus = cursor.getString(16)
+                amount = cursor.getInt(15),
+                accountOpenDate = cursor.getString(16),
+                accountStatus = cursor.getString(17)
             )
         }
         cursor.close()
@@ -129,29 +132,41 @@ class OpenAccountTableHelper(context: Context) :
     }
 
     //this function is used to get the account info(account name, account number and account balance) of user according to user id
-    fun getAccountDetailsByUserId(userId: Int): Triple<Long, String, Int>? {
-        val query = """
-            SELECT A.$COLUMN_ID, A.$COLUMN_NAME, T.$COLUMN_TOTAL_AMOUNT
-            FROM $TABLE_NAME A
-            LEFT JOIN ${TransactionTableHelper.TABLE_NAME} T ON A.$COLUMN_ID = T.$COLUMN_ACCOUNT_NUM
-            WHERE A.$COLUMN_UID = ?
-        """
+    fun getAccountDetailsByUserId(userId: Int): Account? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_UID=?", arrayOf(userId.toString()))
 
-        val db = readableDatabase
-        onCreate(db)
-        val cursor = db.rawQuery(query, arrayOf(userId.toString()))
-
-        var accountDetails: Triple<Long, String, Int>? = null
-
-        if (cursor.moveToFirst()) {
-            val accountNumber = cursor.getLong(0)
-            val accountName = cursor.getString(1)
-            val totalAmount = cursor.getInt(2)
-            accountDetails = Triple(accountNumber, accountName, totalAmount)
+        if (!cursor.moveToFirst()) {
+            return null
         }
 
+        var account: Account
+        do {
+            account = Account(
+                accountNumber = cursor.getLong(0),
+                userid = cursor.getInt(1),
+                name = cursor.getString(2),
+                gender = cursor.getString(3),
+                mobileNumber = cursor.getString(4),
+                email = cursor.getString(5),
+                dob = cursor.getString(6),
+                pan = cursor.getString(7),
+                address = cursor.getString(8),
+                state = cursor.getString(9),
+                city = cursor.getString(10),
+                pincode = cursor.getString(11),
+                ifsc = cursor.getString(12),
+                branch = cursor.getString(13),
+                accountType = cursor.getString(14),
+                amount = cursor.getInt(15),
+                accountOpenDate = cursor.getString(16),
+                accountStatus = cursor.getString(17)
+            )
+        } while (false)
+
+        Log.d("db-debug", account.toString())
         cursor.close()
-        return accountDetails
+        return account
     }
 
     //        This function is used to get the records from the database based on the account number(COLUMN_ID=account_no)
@@ -178,8 +193,9 @@ class OpenAccountTableHelper(context: Context) :
             ifsc = cursor.getString(12),
             branch = cursor.getString(13),
             accountType = cursor.getString(14),
-            accountOpenDate = cursor.getString(15),
-            accountStatus = cursor.getString(16)
+            amount = cursor.getInt(15),
+            accountOpenDate = cursor.getString(16),
+            accountStatus = cursor.getString(17)
         )
 
         cursor.close()
@@ -210,8 +226,9 @@ class OpenAccountTableHelper(context: Context) :
                 ifsc = cursor.getString(12),
                 branch = cursor.getString(13),
                 accountType = cursor.getString(14),
-                accountOpenDate = cursor.getString(15),
-                accountStatus = cursor.getString(16)
+                amount = cursor.getInt(15),
+                accountOpenDate = cursor.getString(16),
+                accountStatus = cursor.getString(17)
             )
 
             accounts.add(account)
@@ -246,9 +263,10 @@ class OpenAccountTableHelper(context: Context) :
                 pincode = cursor.getString(11),
                 ifsc = cursor.getString(12),
                 branch = cursor.getString(13),
-                accountType = cursor.getString(14),
-                accountOpenDate = cursor.getString(15),
-                accountStatus = cursor.getString(16)
+                amount = cursor.getInt(14),
+                accountType = cursor.getString(15),
+                accountOpenDate = cursor.getString(16),
+                accountStatus = cursor.getString(17)
             )
 
             accountList.add(account)
@@ -297,4 +315,29 @@ class OpenAccountTableHelper(context: Context) :
         }
         return db.update(TABLE_NAME, values, "$COLUMN_ID=?", arrayOf(accountNo))
     }
+
+    fun updateAmountOf(id: String, amount: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_TOTAL_AMOUNT, amount)
+
+        db.update(TABLE_NAME, values, "$COLUMN_ID=?", arrayOf(id))
+    }
+
+    fun getAmountOf(id: String): Int? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT $COLUMN_TOTAL_AMOUNT FROM $TABLE_NAME WHERE $COLUMN_ID=?", arrayOf(id))
+
+        if (!cursor.moveToFirst()) return null
+
+        var amount: Int
+        do {
+            amount = cursor.getInt(0)
+        } while (false)
+
+        cursor.close()
+
+        return amount
+    }
+
 }
