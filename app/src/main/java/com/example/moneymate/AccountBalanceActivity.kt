@@ -20,17 +20,14 @@ class AccountBalanceActivity : AppCompatActivity() {
         val dbHelper = OpenAccountTableHelper(this)
         val account = dbHelper.getAccountDetailsByUserId(userId)
 
-        val account_name=findViewById<TextView>(R.id.account_holder_name)
-        val account_number=findViewById<TextView>(R.id.account_number)
-        val account_amount=findViewById<TextView>(R.id.available_amount)
-
+        val accountName=findViewById<TextView>(R.id.account_holder_name)
+        val accountNumber=findViewById<TextView>(R.id.account_number)
+        val accountAmount=findViewById<TextView>(R.id.available_amount)
         if (account != null)
         {
-            val(accountName,accountNumber,accountBalance) = account
-
-            account_name.text = "Account Holder Name: "+accountName
-            account_number.text = "Account Number: "+accountNumber
-            account_amount.text = "Account Balance: "+accountBalance
+            accountName.text = "Account Holder Name: ${account.name.toString()}"
+            accountNumber.text = "Account Number: ${account.accountNumber.toString()}"
+            accountAmount.text = "Total Amount: ${account.amount.toString()}"
         }
         else
         {

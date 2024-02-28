@@ -108,23 +108,23 @@ class OpenAccountActivity : AppCompatActivity() {
         val dbHelper = OpenAccountTableHelper(this)
 
         val account = Account(
-            randomAccountNumber,
-            userId,
-            enteredName,
-            selectedGender,
-            enteredMobileNumber,
-            enteredEmail,
-            enteredDOB,
-            enteredPan,
-            enteredAddress,
-            enteredState,
-            enteredCity,
-            enteredPin,
-            ifsc,
-            enteredCity,
-            enteredAccountType,
-            "",
-            "pending"
+            accountNumber = randomAccountNumber,
+            userid = userId,
+            name = enteredName,
+            gender = selectedGender,
+            mobileNumber = enteredMobileNumber,
+            email = enteredEmail,
+            dob = enteredDOB,
+            pan = enteredPan,
+            address = enteredAddress,
+            state = enteredState,
+            city = enteredCity,
+            pincode = enteredPin,
+            ifsc = ifsc,
+            branch = enteredCity,
+            accountType = enteredAccountType,
+            accountOpenDate = "",
+            accountStatus = "pending"
         )
 
         val success = dbHelper.openAccounnt(account)

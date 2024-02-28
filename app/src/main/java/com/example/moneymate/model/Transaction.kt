@@ -5,7 +5,6 @@ data class Transaction(
     var receiverAccountNo:Long,
     var transactionType:String,
     var amount:Int,
-    var totalAmount:Int,
     var doneAt:String
 ) {
     override fun toString(): String {
@@ -15,7 +14,6 @@ data class Transaction(
                 Receiver AccountNo: $receiverAccountNo
                 Transaction Type: $transactionType
                 Amount: $amount
-                Total Amount: $totalAmount
                 Done AT: $doneAt
             }
         """

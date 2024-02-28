@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import com.example.moneymate.data.OpenAccountTableHelper
 import java.util.*
@@ -61,7 +62,10 @@ class UpdateAccountActivity : AppCompatActivity() {
         val getEmail = intent.getStringExtra("email")
         val getDob = intent.getStringExtra("dob")
 
+        Log.d("db-debug", getAccountNo.toString())
+
         accountNo.setText(getAccountNo)
+        // 56539852575
         name.setText(getName)
         when (getGender) {
             "Male" -> radioMale.isChecked = true

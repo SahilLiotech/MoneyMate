@@ -98,6 +98,7 @@ class RequestTableHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, 
      */
     fun getAllRequestsOf(requestType: String): ArrayList<Request> {
         val db = this.readableDatabase
+        onCreate(db)
         val requestList: ArrayList<Request> = ArrayList()
         val query = "SELECT * FROM $REQUEST_TABLE_NAME WHERE $COLUMN_REQUEST_STATUS = ? AND $COLUMN_REQUEST_TYPE = ?"
         val cursor: Cursor = db.rawQuery(query, arrayOf("Pending", requestType))

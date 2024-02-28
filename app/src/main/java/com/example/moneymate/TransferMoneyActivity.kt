@@ -44,7 +44,6 @@ class TransferMoneyActivity : AppCompatActivity() {
                 if (recipientAccountNum != null && transferMoneyAmount != null && account != null) {
                     val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
                     val transferMoney = transferAmount.text.toString().toInt()
-                    transferMoney(account.accountNumber!!, recipientAccountNumber, transferMoney)
                 } else {
                     Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT)
                         .show()
@@ -52,51 +51,6 @@ class TransferMoneyActivity : AppCompatActivity() {
             }
         } catch (e: NumberFormatException) {
             transferAmount.error = "Please enter valid amount"
-        }
-    }
-
-    private fun transferMoney(
-        senderAccountNo: Long,
-        recipientAccountNo: Long,
-        transferAmount: Int
-    ) {
-        val dbHelper = TransactionTableHelper(this)
-        val transactionType = "Transfer To $recipientAccountNo"
-        val currentTotalAmount = dbHelper.getTotalAmount(senderAccountNo)
-        val updatedTotalAmount = currentTotalAmount - transferAmount
-
-        val transaction = Transaction(
-            senderAccountNo,
-            recipientAccountNo,
-            transactionType,
-            transferAmount,
-            updatedTotalAmount,
-            ""
-        )
-
-        val result = dbHelper.insertTransaction(transaction)
-
-        if (result != -1L) {
-            AlertDialog.Builder(this).create().apply {
-                setTitle("Payment Success")
-                setMessage("Your Transaction SucessFully Done...")
-                setIcon(R.drawable.sucess)
-                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ ->
-                    val intent = Intent(this@TransferMoneyActivity, HomeActivity::class.java)
-                    startActivity(intent)
-                }
-                show()
-            }
-        } else {
-            AlertDialog.Builder(this).create().apply {
-                setTitle("Error occured")
-                setIcon(R.drawable.error)
-                setMessage("Please try again!")
-                setButton(DialogInterface.BUTTON_POSITIVE, "OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                show()
-            }
         }
     }
 }

@@ -16,6 +16,7 @@
         var ifsc: String? = null,
         var branch: String? = null,
         var accountType: String? = null,
+        var amount: Int? = 500,
         var accountOpenDate: String? = null,
         var accountStatus: String? = null
     ){
@@ -36,6 +37,7 @@
                     pincode:$pincode
                     ifsc:$ifsc
                     branch:$branch
+                    amount: $amount
                     accountType:$accountType
                     accountOpendate:$accountOpenDate
                     accountStatus:$accountStatus
