@@ -90,6 +90,21 @@
                         app:layout_constraintHorizontal_bias="0.516"
                         app:layout_constraintStart_toStartOf="parent"
                       />
+                    <TextView
+                        android:id="@+id/heading_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="Done By"
+                        android:background="@drawable/tablerow_whiteborder"
+                        android:textColor="@color/whiteText"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:fontFamily="serif"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.516"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
                 </TableRow>
 
             </TableLayout>

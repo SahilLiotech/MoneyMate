@@ -52,6 +52,7 @@ class StaffDashboardActivity : AppCompatActivity() {
         val pref = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val staffUserName = pref.getString("staffName", "user")
 
+/*
         val helper = TransactionTableHelper(this)
         for (record in helper.getAllTransactions()) {
             Log.d("db-debug", record.toString())
@@ -61,6 +62,7 @@ class StaffDashboardActivity : AppCompatActivity() {
         for (record in userHelper.viewData()) {
             Log.d("db-debug", record.toString())
         }
+*/
 
         val accountTableHelper = OpenAccountTableHelper(this)
         for (record in accountTableHelper.getAccountList()) {

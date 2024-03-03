@@ -32,16 +32,23 @@ class TransactionActivity : AppCompatActivity() {
                 val dateTime = transaction.doneAt
                 val transactionType = transaction.transactionType
                 val amount = transaction.amount
+                val sender = if (transaction.accountNo != -1L) {
+                    transaction.accountNo
+                } else {
+                    "Staff Member"
+                }
 
                 val newRow = TableRow(this)
 
-                val col1 = createTextView(dateTime)
-                val col2 = createTextView(transactionType)
+                val col1 = createTextView(dateTime!!)
+                val col2 = createTextView(transactionType!!)
                 val col3 = createTextView(amount.toString())
+                val col4 = createTextView(sender.toString())
 
                 newRow.addView(col1)
                 newRow.addView(col2)
                 newRow.addView(col3)
+                newRow.addView(col4)
 
                 tableLayout.addView(newRow)
             }

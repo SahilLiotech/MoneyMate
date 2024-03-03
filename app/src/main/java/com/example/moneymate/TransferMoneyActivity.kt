@@ -1,21 +1,16 @@
 package com.example.moneymate
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.IBinder
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.TransactionTableHelper
-import com.example.moneymate.model.Account
 import com.example.moneymate.model.Transaction
-import java.lang.NumberFormatException
 
 class TransferMoneyActivity : AppCompatActivity() {
 
@@ -37,20 +32,48 @@ class TransferMoneyActivity : AppCompatActivity() {
         recipientAccountNo = findViewById(R.id.recipient_account_no)
         transferAmount = findViewById(R.id.transfer_amount)
 
-        val recipientAccountNum = recipientAccountNo.text.toString()
-        val transferMoneyAmount = transferAmount.text.toString()
-        try {
-            transferBtn.setOnClickListener {
-                if (recipientAccountNum != null && transferMoneyAmount != null && account != null) {
-                    val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
-                    val transferMoney = transferAmount.text.toString().toInt()
-                } else {
-                    Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT)
-                        .show()
-                }
+        transferBtn.setOnClickListener {
+            val recipientAccountNum = recipientAccountNo.text.toString()
+            val transferMoneyAmount = transferAmount.text.toString()
+
+            if (recipientAccountNum.isBlank()) {
+                Toast.makeText(this, "Receiver's account number must not be blank", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
             }
-        } catch (e: NumberFormatException) {
-            transferAmount.error = "Please enter valid amount"
+
+            if (transferMoneyAmount.isBlank()) {
+                Toast.makeText(this, "Amount must not be blank", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            if (account == null) {
+                Toast.makeText(this, "You are not eligible to make this transaction", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+            val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
+            val transferMoney = transferAmount.text.toString().toInt()
+            val senderAmount = OpenAccountTableHelper(this)
+                .getAmountOf(account.accountNumber.toString())
+
+            if (senderAmount!! < transferMoney) {
+                Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val transaction = Transaction(
+                account.accountNumber,
+                recipientAccountNumber,
+                "transfer",
+                transferMoney
+            )
+
+            val helper = TransactionTableHelper(this)
+            val (msg, status) = helper.addTransaction(transaction)
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+            if (status) finish()
         }
     }
 }

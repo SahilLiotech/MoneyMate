@@ -49,10 +49,10 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
     }
 
     fun getTransactionDetail(accountNum:Long): List<Transaction>{
-        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ?"
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ? OR $COLUMN_RECEIVER_ACCOUNT_NUM = ?"
         val db = readableDatabase
         onCreate(db)
-        val cursor = db.rawQuery(query, arrayOf(accountNum.toString()))
+        val cursor = db.rawQuery(query, arrayOf(accountNum.toString(), accountNum.toString()))
         val transactions = mutableListOf<Transaction>()
 
         while (cursor.moveToNext()) {
@@ -76,14 +76,12 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
         val db = this.writableDatabase
         onCreate(db)
         val helper = OpenAccountTableHelper(context)
-        if (transaction.accountNo == transaction.receiverAccountNo) {
-            return Pair("Cannot transfer money to self", false)
-        }
-        val senderAmt = helper.getAmountOf(transaction.accountNo.toString()) ?: return Pair("Invalid account number", false)
-        if (transaction.amount > senderAmt) return Pair("Insufficient balance", false)
-        helper.updateAmountOf(transaction.accountNo.toString(), senderAmt - transaction.amount)
-        val recvAmt = helper.getAmountOf(transaction.receiverAccountNo.toString()) ?: return Pair("Invalid receiver account number", false)
-        helper.updateAmountOf(transaction.receiverAccountNo.toString(), recvAmt + transaction.amount)
+        val recvAmt = helper.getAmountOf(transaction.receiverAccountNo.toString())
+            ?: return Pair("Invalid receiver account number", false)
+        helper.updateAmountOf(
+            transaction.receiverAccountNo.toString(),
+            recvAmt + transaction.amount!!
+        )
         val values = ContentValues().apply {
             put(COLUMN_ACCOUNT_NUM,transaction.accountNo)
             put(COLUMN_RECEIVER_ACCOUNT_NUM,transaction.receiverAccountNo)
@@ -93,7 +91,6 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
         db.insert(TABLE_NAME, null, values)
 
         return Pair("transaction completed", true)
-        // 517061984332
     }
 
     fun getAllTransactions(): ArrayList<Transaction> {
