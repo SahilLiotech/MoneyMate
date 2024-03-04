@@ -49,8 +49,10 @@ class TransactionTableHelper(private val context: Context) :
     }
 
     fun getTransactionDetail(accountNum: Long): List<Transaction> {
-        val query =
-            "SELECT $COLUMN_TRANSACTION_TYPE, $COLUMN_AMOUNT, $COLUMN_DONE FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ? OR $COLUMN_RECEIVER_ACCOUNT_NUM =?"
+        val query = """
+            SELECT $COLUMN_ID, $COLUMN_TRANSACTION_TYPE, $COLUMN_AMOUNT, $COLUMN_DONE
+                FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ? OR $COLUMN_RECEIVER_ACCOUNT_NUM =?
+                """
         val db = readableDatabase
         onCreate(db)
         val cursor = db.rawQuery(query, arrayOf(accountNum.toString(), accountNum.toString()))
@@ -59,9 +61,10 @@ class TransactionTableHelper(private val context: Context) :
         while (cursor.moveToNext()) {
             transactions.add(
                 Transaction(
-                    transactionType = cursor.getString(0),
-                    amount = cursor.getInt(1),
-                    doneAt = cursor.getString(2)
+                    accountNo = cursor.getLong(0),
+                    transactionType = cursor.getString(1),
+                    amount = cursor.getInt(2),
+                    doneAt = cursor.getString(3)
                 )
             )
         }
@@ -75,25 +78,37 @@ class TransactionTableHelper(private val context: Context) :
         val db = this.writableDatabase
         onCreate(db)
         val helper = OpenAccountTableHelper(context)
-        if (transaction.accountNo == transaction.receiverAccountNo) {
-            return Pair("Cannot transfer money to self", false)
+
+        if (transaction.transactionType == "transfer") {
+            if (helper.getAccountDetailsById(transaction.accountNo.toString()) == null) {
+                return Pair("Invalid sender account number", false)
+            }
+
+            if (helper.getAmountOf(transaction.accountNo.toString())!! < transaction.amount!!) {
+                return Pair("Insufficient Amount", false)
+            }
         }
 
         val recvAmt = helper.getAmountOf(transaction.receiverAccountNo.toString())
             ?: return Pair("Invalid receiver account number", false)
-        if (transaction.transactionType == "deposit")
-            helper.updateAmountOf(
+        when (transaction.transactionType) {
+            "deposit" -> helper.updateAmountOf(
                 transaction.receiverAccountNo.toString(),
                 recvAmt + transaction.amount!!
             )
-        else if (transaction.transactionType == "withdraw") {
-            if (transaction.amount!! > recvAmt) return Pair("Insufficient Balance", false)
-            helper.updateAmountOf(
-                transaction.receiverAccountNo.toString(),
-                recvAmt - transaction.amount!!
-            )
-        } else if (transaction.transactionType == "transfer") {
-            helper.updateAmountOf(transaction.accountNo.toString(), recvAmt - transaction.amount!!)
+            "withdraw" -> {
+                if (transaction.amount!! > recvAmt) return Pair("Insufficient Balance", false)
+                helper.updateAmountOf(
+                    transaction.receiverAccountNo.toString(),
+                    recvAmt - transaction.amount!!
+                )
+            }
+            "transfer" -> {
+                helper.updateAmountOf(
+                    transaction.accountNo.toString(),
+                    recvAmt - transaction.amount!!
+                )
+            }
         }
         val values = ContentValues().apply {
             put(COLUMN_ACCOUNT_NUM, transaction.accountNo)
