@@ -11,22 +11,22 @@ import com.example.moneymate.model.Account
 
 class AccountInfoActivity : AppCompatActivity() {
 
-    private lateinit var getName:TextView
-    private lateinit var getAccountNO:TextView
-    private lateinit var getGender:TextView
-    private lateinit var getMobile:TextView
-    private lateinit var getEmail:TextView
-    private lateinit var getDob:TextView
-    private lateinit var getPan:TextView
-    private lateinit var getAddress:TextView
-    private lateinit var getState:TextView
-    private lateinit var getCity:TextView
-    private lateinit var getPin:TextView
-    private lateinit var getIfsc:TextView
-    private lateinit var getBranch:TextView
-    private lateinit var getAccountType:TextView
-    private lateinit var getAccountOpen:TextView
-    private lateinit var getAccountStatus:TextView
+    private lateinit var getName: TextView
+    private lateinit var getAccountNO: TextView
+    private lateinit var getGender: TextView
+    private lateinit var getMobile: TextView
+    private lateinit var getEmail: TextView
+    private lateinit var getDob: TextView
+    private lateinit var getPan: TextView
+    private lateinit var getAddress: TextView
+    private lateinit var getState: TextView
+    private lateinit var getCity: TextView
+    private lateinit var getPin: TextView
+    private lateinit var getIfsc: TextView
+    private lateinit var getBranch: TextView
+    private lateinit var getAccountType: TextView
+    private lateinit var getAccountOpen: TextView
+    private lateinit var getAccountStatus: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,22 +64,22 @@ class AccountInfoActivity : AppCompatActivity() {
 
     private fun displayAccountDetails(account: Account?) {
         if (account != null) {
-            getName.text = "A/C Holder Name: "+account.name
-            getAccountNO.text = "A/C No: "+account.accountNumber.toString()
-            getGender.text = "Gender: "+account.gender
-            getMobile.text = "Mobile No: "+account.mobileNumber
-            getEmail.text = "Email Id: "+account.email
-            getDob.text = "Date Of Birth: "+account.dob
-            getPan.text = "Pan Card No: "+account.pan
-            getAddress.text = "Address: "+account.address
-            getCity.text = "City: "+account.city
-            getState.text = "State: "+account.state
-            getPin.text = "Pin Code: "+account.pincode
-            getIfsc.text = "IFSC Code: "+account.ifsc
-            getBranch.text = "Branch Name: "+account.branch
-            getAccountType.text = "A/C Type: "+account.accountType
-            getAccountOpen.text="Account Open Date: "+account.accountOpenDate
-            getAccountStatus.text ="Account Status: "+ account.accountStatus
+            getName.text = "A/C Holder Name: " + account.name
+            getAccountNO.text = "A/C No: " + account.accountNumber.toString()
+            getGender.text = "Gender: " + account.gender
+            getMobile.text = "Mobile No: " + account.mobileNumber
+            getEmail.text = "Email Id: " + account.email
+            getDob.text = "Date Of Birth: " + account.dob
+            getPan.text = "Pan Card No: " + account.pan
+            getAddress.text = "Address: " + account.address
+            getCity.text = "City: " + account.city
+            getState.text = "State: " + account.state
+            getPin.text = "Pin Code: " + account.pincode
+            getIfsc.text = "IFSC Code: " + account.ifsc
+            getBranch.text = "Branch Name: " + account.branch
+            getAccountType.text = "A/C Type: " + account.accountType
+            getAccountOpen.text = "Account Open Date: " + account.accountOpenDate
+            getAccountStatus.text = "Account Status: " + account.accountStatus
         } else {
             Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
         }

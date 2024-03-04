@@ -7,7 +7,7 @@ data class Request(
     var requestStatus: String? = null,
     var requestDate: String? = null
 
-){
+) {
     override fun toString(): String {
         return """
             Request:{

@@ -66,7 +66,10 @@ internal class AccountsAdapter(private val context: Context, private val status:
                     setMessage("Are you sure you want to $action this account?")
                     setPositiveButton("Yes") { _, _ ->
                         val helper = OpenAccountTableHelper(context)
-                        helper.updateAccountStatus(account.accountNumber.toString(), if (status == "deactivate") "active" else action)
+                        helper.updateAccountStatus(
+                            account.accountNumber.toString(),
+                            if (status == "deactivate") "active" else action
+                        )
                         accounts.removeAt(adapterPosition)
                         notifyItemRemoved(adapterPosition)
                     }

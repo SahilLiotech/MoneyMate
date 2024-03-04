@@ -17,15 +17,15 @@ private const val COLUMN_AMOUNT = "amount"
 private const val COLUMN_DONE = "done_at"
 
 
+class TransactionTableHelper(private val context: Context) :
+    SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
-class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(context, DB_NAME,null, DB_VERSION) {
-
-    companion object{
+    companion object {
         internal const val TABLE_NAME = "transactions"
         internal const val COLUMN_ID = "tid"
     }
 
-    private val CREATE_TABLE="""
+    private val CREATE_TABLE = """
         CREATE TABLE IF NOT EXISTS $TABLE_NAME(
             $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_ACCOUNT_NUM INTEGER NOT NULL,
@@ -37,7 +37,7 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
         )
     """
 
-    private val DROP_TABLE ="DROP TABLE IF EXISTS $TABLE_NAME "
+    private val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME "
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE)
@@ -48,8 +48,9 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
         onCreate(db)
     }
 
-    fun getTransactionDetail(accountNum:Long): List<Transaction>{
-        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ? OR $COLUMN_RECEIVER_ACCOUNT_NUM = ?"
+    fun getTransactionDetail(accountNum: Long): List<Transaction> {
+        val query =
+            "SELECT $COLUMN_TRANSACTION_TYPE, $COLUMN_AMOUNT, $COLUMN_DONE FROM $TABLE_NAME WHERE $COLUMN_ACCOUNT_NUM = ? OR $COLUMN_RECEIVER_ACCOUNT_NUM =?"
         val db = readableDatabase
         onCreate(db)
         val cursor = db.rawQuery(query, arrayOf(accountNum.toString(), accountNum.toString()))
@@ -58,15 +59,13 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
         while (cursor.moveToNext()) {
             transactions.add(
                 Transaction(
-                    accountNo = cursor.getLong(1),
-                    receiverAccountNo = cursor.getLong(2),
-                    transactionType = cursor.getString(3),
-                    amount = cursor.getInt(4),
-                    doneAt = cursor.getString(5)
+                    transactionType = cursor.getString(0),
+                    amount = cursor.getInt(1),
+                    doneAt = cursor.getString(2)
                 )
             )
         }
-        Log.d("user-debug",transactions.toString())
+        Log.d("user-debug", transactions.toString())
         cursor.close()
         db.close()
         return transactions
@@ -76,17 +75,31 @@ class TransactionTableHelper(private val context: Context):SQLiteOpenHelper(cont
         val db = this.writableDatabase
         onCreate(db)
         val helper = OpenAccountTableHelper(context)
+        if (transaction.accountNo == transaction.receiverAccountNo) {
+            return Pair("Cannot transfer money to self", false)
+        }
+
         val recvAmt = helper.getAmountOf(transaction.receiverAccountNo.toString())
             ?: return Pair("Invalid receiver account number", false)
-        helper.updateAmountOf(
-            transaction.receiverAccountNo.toString(),
-            recvAmt + transaction.amount!!
-        )
+        if (transaction.transactionType == "deposit")
+            helper.updateAmountOf(
+                transaction.receiverAccountNo.toString(),
+                recvAmt + transaction.amount!!
+            )
+        else if (transaction.transactionType == "withdraw") {
+            if (transaction.amount!! > recvAmt) return Pair("Insufficient Balance", false)
+            helper.updateAmountOf(
+                transaction.receiverAccountNo.toString(),
+                recvAmt - transaction.amount!!
+            )
+        } else if (transaction.transactionType == "transfer") {
+            helper.updateAmountOf(transaction.accountNo.toString(), recvAmt - transaction.amount!!)
+        }
         val values = ContentValues().apply {
-            put(COLUMN_ACCOUNT_NUM,transaction.accountNo)
-            put(COLUMN_RECEIVER_ACCOUNT_NUM,transaction.receiverAccountNo)
-            put(COLUMN_TRANSACTION_TYPE,transaction.transactionType)
-            put(COLUMN_AMOUNT,transaction.amount)
+            put(COLUMN_ACCOUNT_NUM, transaction.accountNo)
+            put(COLUMN_RECEIVER_ACCOUNT_NUM, transaction.receiverAccountNo)
+            put(COLUMN_TRANSACTION_TYPE, transaction.transactionType)
+            put(COLUMN_AMOUNT, transaction.amount)
         }
         db.insert(TABLE_NAME, null, values)
 

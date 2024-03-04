@@ -81,5 +81,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deposit_amount" />
 
+<!--
+        <EditText
+            android:id="@+id/sender_account_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="20dp"
+            android:inputType="number"
+            android:paddingHorizontal='20sp'
+            android:paddingVertical="10dp"
+            android:textColor='@color/whiteText'
+            android:hint="Sender Account No"
+            android:textColorHint="@color/whiteText"
+            android:background="@drawable/input_box"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deposit_money_heading" />
+-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
