@@ -107,24 +107,24 @@ class OpenAccountTableHelper(context: Context) :
 
         if (cursor.moveToFirst()) {
             account = Account(
-                accountNumber = cursor.getLong(0),
-                userid = cursor.getInt(1),
-                name = cursor.getString(2),
-                gender = cursor.getString(3),
-                mobileNumber = cursor.getString(4),
-                email = cursor.getString(5),
-                dob = cursor.getString(6),
-                pan = cursor.getString(7),
-                address = cursor.getString(8),
-                state = cursor.getString(9),
-                city = cursor.getString(10),
-                pincode = cursor.getString(11),
-                ifsc = cursor.getString(12),
-                branch = cursor.getString(13),
-                accountType = cursor.getString(14),
-                amount = cursor.getInt(15),
-                accountOpenDate = cursor.getString(16),
-                accountStatus = cursor.getString(17)
+                accountNumber = cursor.getLong(0), /* $COLUMN_ID INTEGER PRIMARY KEY, */
+                userid = cursor.getInt(1), /* $COLUMN_UID INTEGER NOT NULL, */
+                name = cursor.getString(2), /* $COLUMN_NAME TEXT NOT NULL, */
+                gender = cursor.getString(3), /* $COLUMN_GENDER TEXT NOT NULL, */
+                mobileNumber = cursor.getString(4), /* $COLUMN_MOBILE TEXT NOT NULL, */
+                email = cursor.getString(5), /* $COLUMN_EMAIL TEXT NOT NULL, */
+                dob = cursor.getString(6), /* $COLUMN_DOB TEXT NOT NULL, */
+                pan = cursor.getString(7), /* $COLUMN_PAN TEXT NOT NULL, */
+                address = cursor.getString(8), /* $COLUMN_ADDRESS TEXT NOT NULL, */
+                state = cursor.getString(9), /* $COLUMN_STATE TEXT NOT NULL, */
+                city = cursor.getString(10), /* $COLUMN_CITY TEXT NOT NULL, */
+                pincode = cursor.getString(11), /* $COLUMN_PIN TEXT NOT NULL, */
+                ifsc = cursor.getString(12), /* $COLUMN_IFSC TEXT NOT NULL, */
+                branch = cursor.getString(13), /* $COLUMN_BRANCH TEXT NOT NULL, */
+                accountType = cursor.getString(14), /* $COLUMN_ACCOUNT_TYPE TEXT NOT NULL, */
+                amount = cursor.getInt(15), /* $COLUMN_TOTAL_AMOUNT INTEGER DEFAULT 500 NOT NULL, */
+                accountOpenDate = cursor.getString(16), /* $COLUMN_ACCOUNT_OPEN TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, */
+                accountStatus = cursor.getString(17) /* $COLUMN_ACCOUNT_STATUS TEXT NOT NULL, */
             )
         }
         cursor.close()

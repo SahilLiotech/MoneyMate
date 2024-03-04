@@ -37,7 +37,6 @@ class DepositeActivity : AppCompatActivity() {
             val transaction = Transaction(
                 -1,
                 amount = depositAmount,
-                doneAt = "",
                 receiverAccountNo = accountNumber,
                 transactionType = "deposit"
             )

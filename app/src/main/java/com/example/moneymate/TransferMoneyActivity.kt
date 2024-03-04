@@ -40,30 +40,32 @@ class TransferMoneyActivity : AppCompatActivity() {
         transferBtn.setOnClickListener {
             val recipientAccountNum = recipientAccountNo.text.toString()
             val transferMoneyAmount = transferAmount.text.toString()
-            transferBtn.setOnClickListener {
-                if (recipientAccountNum.trim() != "" && transferMoneyAmount.trim() != "") {
-                    val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
-                    val transferMoney = transferAmount.text.toString().toInt()
-
-                    val helper = OpenAccountTableHelper(this)
-                    val senderAmt = helper.getAmountOf(account?.accountNumber.toString())
-                    if (transferMoney > senderAmt!!) {
-                        Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this, "Valid transaction", Toast.LENGTH_SHORT).show()
-                        val helper = TransactionTableHelper(this)
-                        val transaction = Transaction()
-                        transaction.accountNo = account?.accountNumber
-                        transaction.amount = transferMoney
-                        transaction.receiverAccountNo = recipientAccountNumber
-                        transaction.transactionType = "transfer"
-                        helper.addTransaction(transaction)
-                    }
-                } else {
-                    Toast.makeText(applicationContext, "Some Error Occured", Toast.LENGTH_SHORT)
-                        .show()
-                }
+            if (recipientAccountNum.trim() == "" && transferMoneyAmount.trim() == "") {
+                Toast.makeText(this, "Please enter number", Toast.LENGTH_LONG)
+                    .show()
+                return@setOnClickListener
             }
+
+            if (account == null) {
+                Toast.makeText(this, "You ain't valid, nigger", Toast.LENGTH_LONG)
+                    .show()
+                return@setOnClickListener
+            }
+
+            val recipientAccountNumber = recipientAccountNo.text.toString().toLong()
+            val transferMoney = transferAmount.text.toString().toInt()
+
+            val helper = TransactionTableHelper(this)
+            val transaction = Transaction()
+            transaction.accountNo = account.accountNumber
+            transaction.amount = transferMoney
+            transaction.receiverAccountNo = recipientAccountNumber
+            transaction.transactionType = "transfer"
+            val (msg, status) = helper.addTransaction(transaction)
+
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+            if (status) finish()
         }
     }
 }
