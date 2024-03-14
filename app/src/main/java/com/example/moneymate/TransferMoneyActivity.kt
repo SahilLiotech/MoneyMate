@@ -1,21 +1,15 @@
 package com.example.moneymate
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.IBinder
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.example.moneymate.data.OpenAccountTableHelper
 import com.example.moneymate.data.TransactionTableHelper
-import com.example.moneymate.model.Account
 import com.example.moneymate.model.Transaction
-import java.lang.NumberFormatException
 
 class TransferMoneyActivity : AppCompatActivity() {
 
@@ -47,7 +41,7 @@ class TransferMoneyActivity : AppCompatActivity() {
             }
 
             if (account == null) {
-                Toast.makeText(this, "You ain't valid, nigger", Toast.LENGTH_LONG)
+                Toast.makeText(this, "You ain't valid, user", Toast.LENGTH_LONG)
                     .show()
                 return@setOnClickListener
             }
